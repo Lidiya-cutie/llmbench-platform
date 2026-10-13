@@ -1,0 +1,1066 @@
+{
+  "generated_at": "2026-08-12T10:42:00+00:00",
+  "models": [
+    {
+      "name": "local-27b-1bit",
+      "maker": "llama.cpp (PrismML fork) · GGUF Q1_0 (1.125 bpw)",
+      "quality": {
+        "ifeval": 78.6,
+        "gsm8k": 92.9,
+        "minerva_math": 51.5,
+        "mmlu_pro": 58.4
+      },
+      "quality_categories": {
+        "mmlu_pro": {
+          "metric": "exact_match,custom-extract",
+          "sample_len": 12032,
+          "source": "out/lmeval_local-27b-1bit_queue/mmlu_pro/local-27b-Q1_0.gguf/local-27b-Q1_0.gguf/results_2026-08-12T01-14-02.509978.json"
+        },
+        "gsm8k": {
+          "metric": "exact_match,flexible-extract",
+          "strict_match": 0.9279757391963609,
+          "sample_len": 1319,
+          "source": "out/lmeval_local-27b-1bit_queue/gsm8k/local-27b-Q1_0.gguf/local-27b-Q1_0.gguf/results_2026-08-12T02-12-11.829680.json"
+        },
+        "minerva_math": {
+          "metric": "math_verify,none (weighted by sample_len)",
+          "subsets": {
+            "algebra": 0.7295703454085931,
+            "counting_and_prob": 0.5021097046413502,
+            "geometry": 0.44676409185803756,
+            "intermediate_algebra": 0.2115171650055371,
+            "num_theory": 0.4074074074074074,
+            "prealgebra": 0.7818599311136625,
+            "precalc": 0.304029304029304
+          },
+          "source": "out/lmeval_local-27b-1bit_queue/minerva_math/local-27b-Q1_0.gguf/local-27b-Q1_0.gguf/results_2026-08-12T06-15-45.573068.json",
+          "n_total": 5000
+        },
+        "ifeval": {
+          "metric": "prompt_level_loose_acc,none",
+          "sample_len": 541,
+          "source": "out/lmeval_local-27b-1bit_queue/ifeval/local-27b-Q1_0.gguf/local-27b-Q1_0.gguf/results_2026-08-12T06-38-33.291128.json"
+        },
+        "humaneval": {
+          "metric": "pass@1,create_test",
+          "task": "humaneval_instruct",
+          "sample_len": 164,
+          "source": "out/lmeval_local-27b-1bit_queue/humaneval_instruct/local-27b-Q1_0.gguf/local-27b-Q1_0.gguf/results_2026-08-12T06-42-13.363158.json",
+          "task_variant": "humaneval_instruct"
+        }
+      },
+      "perf": {
+        "n": 6,
+        "ok": 0,
+        "ttft_s_mean": 0.0,
+        "ttft_s_p90": 0.0,
+        "latency_s_p50": 0.0,
+        "latency_s_p90": 0.0,
+        "latency_s_p99": 0.0,
+        "gen_tok_s_mean": 0.0,
+        "gen_tok_s_median": 0.0,
+        "prefill_tok_s_mean": 0.0,
+        "prompt_len_tokens": 23,
+        "max_tokens": 128
+      },
+      "hardware": {
+        "samples": 245,
+        "duration_s": 24.495,
+        "energy_wh": 0.497934,
+        "avg_power_w": 73.21,
+        "max_power_w": 99.23,
+        "peak_vram_mb": 23419.2,
+        "avg_util_pct": 7.3,
+        "max_temp_c": 43.0,
+        "source": "pynvml",
+        "vram_note": "VRAM для llama.cpp/ollama отражает фактическую загрузку весов + KV-cache."
+      },
+      "cost": {
+        "usd_per_hour": 0.08112,
+        "usd_per_1m_tokens": 22.5339,
+        "usd_per_1k_requests": 9.01354,
+        "energy_wh_per_1k_tokens": 20.336,
+        "assumptions": {
+          "gpu_price": 1800.0,
+          "gpu_life_hours": 26280,
+          "electricity_price_kwh": 0.15,
+          "pue": 1.15
+        }
+      },
+      "micro": {
+        "math_acc": 1.0,
+        "math_n": 5,
+        "json_valid": 1.0,
+        "tool_call_ok": 0.0,
+        "detail": {
+          "math": [
+            {
+              "gold": 43,
+              "got": 43.0,
+              "ok": true
+            },
+            {
+              "gold": 260,
+              "got": 260.0,
+              "ok": true
+            },
+            {
+              "gold": 21,
+              "got": 21.0,
+              "ok": true
+            },
+            {
+              "gold": 170,
+              "got": 170.0,
+              "ok": true
+            },
+            {
+              "gold": 391,
+              "got": 391.0,
+              "ok": true
+            }
+          ]
+        }
+      },
+      "context_max": 262144
+    },
+    {
+      "name": "local-27b-27b-ternary",
+      "maker": "llama.cpp (PrismML fork) · GGUF Q2_0 (ternary, 1.58 bpw)",
+      "quality": {
+        "gsm8k": 71.4,
+        "minerva_math": 55.9,
+        "humaneval": 99.4,
+        "mbpp": 65.4,
+        "ifeval": 79.3,
+        "gpqa": 26.6,
+        "mmlu_pro": 68.4
+      },
+      "quality_categories": {
+        "gsm8k": {
+          "metric": "exact_match,flexible-extract",
+          "strict_match": 0.8718726307808946,
+          "sample_len": 1319,
+          "source": "out/lmeval_local-27b-27b-ternary_queue/gsm8k_fixed/Ternary-local-27b-Q2_0.gguf/results_2026-08-01T00-10-02.740974.json"
+        },
+        "minerva_math": {
+          "metric": "math_verify,none (weighted by sample_len)",
+          "subsets": {
+            "algebra": 0.7801179443976411,
+            "counting_and_prob": 0.6012658227848101,
+            "geometry": 0.4509394572025052,
+            "intermediate_algebra": 0.2513842746400886,
+            "num_theory": 0.48703703703703705,
+            "prealgebra": 0.8082663605051664,
+            "precalc": 0.31684981684981683
+          },
+          "source": "out/lmeval_local-27b-27b-ternary_queue/minerva_math_recheck_nothink/Ternary-local-27b-Q2_0.gguf/Ternary-local-27b-Q2_0.gguf/results_2026-08-11T08-42-28.931822.json",
+          "n_total": 5000
+        },
+        "mbpp": {
+          "metric": "pass_at_1,none",
+          "task": "mbpp",
+          "sample_len": 500,
+          "source": "out/lmeval_local-27b-27b-ternary_queue/mbpp/Ternary-local-27b-Q2_0.gguf/results_2026-07-31T12-39-33.116739.json"
+        },
+        "ifeval": {
+          "metric": "prompt_level_loose_acc,none",
+          "sample_len": 541,
+          "source": "out/lmeval_local-27b-27b-ternary_queue/ifeval_recheck_nothink/Ternary-local-27b-Q2_0.gguf/Ternary-local-27b-Q2_0.gguf/results_2026-08-11T03-40-00.633508.json"
+        },
+        "gpqa": {
+          "metric": "exact_match,flexible-extract",
+          "task": "gpqa_main_generative_n_shot",
+          "sample_len": 448,
+          "source": "out/lmeval_local-27b-27b-ternary_queue/gpqa_generative/Ternary-local-27b-Q2_0.gguf/results_2026-08-05T06-45-10.129229.json"
+        },
+        "humaneval": {
+          "metric": "pass@1,create_test",
+          "task": "humaneval_instruct",
+          "sample_len": 164,
+          "source": "out/lmeval_local-27b-27b-ternary_queue/humaneval_instruct_nothink/Ternary-local-27b-Q2_0.gguf/Ternary-local-27b-Q2_0.gguf/results_rescored_2026-08-11T10-08-22.json",
+          "task_variant": "humaneval_instruct",
+          "rescored_offline": true
+        },
+        "mmlu_pro": {
+          "metric": "exact_match,custom-extract",
+          "sample_len": 12032,
+          "source": "out/lmeval_local-27b-27b-ternary_queue/mmlu_pro_recheck_nothink/Ternary-local-27b-Q2_0.gguf/Ternary-local-27b-Q2_0.gguf/results_2026-08-11T03-08-11.096337.json"
+        }
+      },
+      "perf": {
+        "n": 12,
+        "ok": 12,
+        "ttft_s_mean": 0.0999,
+        "ttft_s_p90": 0.0898,
+        "latency_s_p50": 3.0778,
+        "latency_s_p90": 3.1127,
+        "latency_s_p99": 3.2067,
+        "gen_tok_s_mean": 85.52,
+        "gen_tok_s_median": 85.64,
+        "prefill_tok_s_mean": 335.14,
+        "prompt_len_tokens": 31,
+        "max_tokens": 256,
+        "ttft_s_p95": 0.0898,
+        "ttft_s_p95_proxy": "ttft_s_p90",
+        "latency_s_p95": 3.1127,
+        "latency_s_p95_proxy": "latency_s_p90"
+      },
+      "hardware": {
+        "samples": 494,
+        "duration_s": 49.421,
+        "energy_wh": 2.765061,
+        "avg_power_w": 201.34,
+        "max_power_w": 296.41,
+        "peak_vram_mb": 4776.6,
+        "avg_util_pct": 42.9,
+        "max_temp_c": 61.0,
+        "source": "pynvml",
+        "vram_note": "VRAM для llama.cpp/ollama отражает фактическую загрузку весов + KV-cache.",
+        "vram_disk_ratio": 0.7004,
+        "disk_size_mb": 6819.8,
+        "vram_integrity": "FAIL"
+      },
+      "cost": {
+        "usd_per_hour": 0.10322,
+        "usd_per_1m_tokens": 0.3353,
+        "usd_per_1k_requests": 0.13411,
+        "energy_wh_per_1k_tokens": 0.654,
+        "assumptions": {
+          "gpu_price": 1800.0,
+          "gpu_life_hours": 26280,
+          "electricity_price_kwh": 0.15,
+          "pue": 1.15
+        }
+      },
+      "micro": {
+        "math_acc": 1.0,
+        "math_n": 5,
+        "json_valid": 1.0,
+        "tool_call_ok": 1.0,
+        "detail": {
+          "math": [
+            {
+              "gold": 43,
+              "got": 43.0,
+              "ok": true
+            },
+            {
+              "gold": 260,
+              "got": 260.0,
+              "ok": true
+            },
+            {
+              "gold": 21,
+              "got": 21.0,
+              "ok": true
+            },
+            {
+              "gold": 170,
+              "got": 170.0,
+              "ok": true
+            },
+            {
+              "gold": 391,
+              "got": 391.0,
+              "ok": true
+            }
+          ]
+        }
+      },
+      "context_max": 262144
+    },
+    {
+      "name": "deepseek-v4-flash",
+      "maker": "vLLM (remote OpenAI-compatible) · served (remote vLLM)",
+      "quality": {
+        "gsm8k": 94.5,
+        "minerva_math": 57.2,
+        "humaneval": 84.1,
+        "mbpp": 79.4,
+        "ifeval": 30.5,
+        "gpqa": 50.4
+      },
+      "quality_categories": {
+        "gsm8k": {
+          "metric": "exact_match,flexible-extract",
+          "strict_match": 0.6330553449583017,
+          "sample_len": 1319,
+          "source": "out/lmeval_deepseek-v4-flash_queue/gsm8k/deepseek-v4-flash-dspark/results_2026-07-28T08-49-02.030731.json"
+        },
+        "minerva_math": {
+          "metric": "math_verify,none (weighted by sample_len)",
+          "subsets": {
+            "algebra": 0.7438921651221567,
+            "counting_and_prob": 0.6434599156118144,
+            "geometry": 0.4592901878914405,
+            "intermediate_algebra": 0.25802879291251385,
+            "num_theory": 0.5648148148148148,
+            "prealgebra": 0.8438576349024111,
+            "precalc": 0.326007326007326
+          },
+          "source": "out/lmeval_deepseek-v4-flash_queue/minerva_math/deepseek-v4-flash-dspark/results_2026-08-01T12-14-16.567692.json",
+          "n_total": 5000
+        },
+        "mbpp": {
+          "metric": "pass_at_1,none",
+          "task": "mbpp",
+          "sample_len": 500,
+          "source": "out/lmeval_deepseek-v4-flash_queue/mbpp/deepseek-v4-flash-dspark/results_2026-08-01T18-39-17.282607.json"
+        },
+        "ifeval": {
+          "metric": "prompt_level_loose_acc,none",
+          "sample_len": 541,
+          "source": "out/lmeval_deepseek-v4-flash_queue/ifeval/deepseek-v4-flash-dspark/results_2026-08-01T22-58-58.263900.json"
+        },
+        "humaneval": {
+          "metric": "pass@1,create_test",
+          "task": "humaneval_instruct",
+          "sample_len": 164,
+          "source": "out/lmeval_deepseek-v4-flash_queue/humaneval_instruct/deepseek-v4-flash/deepseek-v4-flash-dspark/results_2026-08-06T07-34-07.620688.json",
+          "task_variant": "humaneval_instruct"
+        },
+        "gpqa": {
+          "metric": "exact_match,flexible-extract",
+          "task": "gpqa_main_generative_n_shot",
+          "sample_len": 448,
+          "source": "out/lmeval_deepseek-v4-flash_queue/gpqa_main_generative_n_shot/deepseek-v4-flash/deepseek-v4-flash-dspark/results_2026-08-06T07-49-24.297220.json"
+        }
+      },
+      "perf": {
+        "n": 4,
+        "ok": 4,
+        "ttft_s_mean": 30.5617,
+        "ttft_s_p90": 62.4097,
+        "latency_s_p50": 35.983,
+        "latency_s_p90": 65.2055,
+        "latency_s_p99": 67.2367,
+        "gen_tok_s_mean": 16.53,
+        "gen_tok_s_median": 17.87,
+        "prefill_tok_s_mean": 38.4,
+        "prompt_len_tokens": 28,
+        "max_tokens": 64
+      },
+      "hardware": {},
+      "cost": {},
+      "micro": {
+        "math_acc": 1.0,
+        "math_n": 5,
+        "json_valid": 1.0,
+        "tool_call_ok": 1.0,
+        "detail": {
+          "math": [
+            {
+              "gold": 43,
+              "got": 43.0,
+              "ok": true
+            },
+            {
+              "gold": 260,
+              "got": 260.0,
+              "ok": true
+            },
+            {
+              "gold": 21,
+              "got": 21.0,
+              "ok": true
+            },
+            {
+              "gold": 170,
+              "got": 170.0,
+              "ok": true
+            },
+            {
+              "gold": 391,
+              "got": 391.0,
+              "ok": true
+            }
+          ]
+        }
+      },
+      "context_max": 500000
+    },
+    {
+      "name": "gemma-3-27b-awq",
+      "maker": "Triton vLLM · AWQ",
+      "quality": {
+        "mmlu_pro": 60.8,
+        "minerva_math": 65.2,
+        "gsm8k": 88.0,
+        "humaneval": 84.1,
+        "mbpp": 63.8,
+        "ifeval": 83.7,
+        "gpqa": 27.9
+      },
+      "quality_categories": {
+        "ifeval": {
+          "metric": "prompt_level_loose_acc,none",
+          "sample_len": null,
+          "source": "out/lmeval_gemma-3-27b-awq_queue/ifeval/gemma-3-27b-awq/results_2026-08-03T10-33-36.000000.json"
+        },
+        "gpqa": {
+          "metric": "exact_match,flexible-extract",
+          "task": "gpqa_main_generative_n_shot",
+          "sample_len": 448,
+          "source": "out/lmeval_gemma-3-27b-awq_queue/gpqa_main_generative_n_shot/gemma-3-27b-awq/results_2026-08-05T13-46-20.526621.json"
+        },
+        "humaneval": {
+          "metric": "pass@1,create_test",
+          "task": "humaneval_instruct",
+          "sample_len": 164,
+          "source": "out/lmeval_gemma-3-27b-awq_queue/humaneval_instruct/gemma-3-27b-awq/results_rescored_2026-08-06T10-55-15.json",
+          "task_variant": "humaneval_instruct",
+          "rescored_offline": true
+        },
+        "minerva_math": {
+          "metric": "math_verify,none (weighted by sample_len)",
+          "subsets": {
+            "algebra": 0.8609941027801179,
+            "counting_and_prob": 0.6329113924050633,
+            "geometry": 0.5553235908141962,
+            "intermediate_algebra": 0.3864894795127353,
+            "num_theory": 0.6481481481481481,
+            "prealgebra": 0.8473019517795637,
+            "precalc": 0.43040293040293043
+          },
+          "source": "out/lmeval_gemma-3-27b-awq_queue/minerva_math/gemma-3-27b-awq/gemma-3-27b-awq/results_2026-08-06T22-58-44.104142.json",
+          "n_total": 5000
+        },
+        "mmlu_pro": {
+          "metric": "exact_match,custom-extract",
+          "sample_len": 12032,
+          "source": "out/lmeval_gemma-3-27b-awq_queue/mmlu_pro/gemma-3-27b-awq/gemma-3-27b-awq/results_2026-08-11T11-01-22.173661.json"
+        },
+        "mbpp": {
+          "metric": "pass_at_1,none",
+          "task": "mbpp",
+          "sample_len": 500,
+          "source": "out/lmeval_gemma-3-27b-awq_queue/mbpp/gemma-3-27b-awq/gemma-3-27b-awq/results_rescored_2026-08-11T19-20-41.json"
+        }
+      },
+      "perf": {
+        "n": 5,
+        "ok": 5,
+        "ttft_s_mean": 7.1428,
+        "ttft_s_p90": 7.8571,
+        "ttft_s_p95": 8.2142,
+        "latency_s_p50": 8.9285,
+        "latency_s_p90": 10.7142,
+        "latency_s_p95": 11.6071,
+        "latency_s_p99": 13.3928,
+        "gen_tok_s_mean": 17.34,
+        "gen_tok_s_median": 17.34,
+        "prefill_tok_s_mean": 0.0,
+        "prompt_len_tokens": 10,
+        "max_tokens": 256
+      },
+      "hardware": {
+        "samples": 1,
+        "duration_s": 45.0,
+        "energy_wh": 0.0,
+        "avg_power_w": 48.65,
+        "max_power_w": 58.38,
+        "peak_vram_mb": 23713.9,
+        "avg_util_pct": 95.0,
+        "max_temp_c": 0.0,
+        "source": "measured"
+      },
+      "cost": {
+        "usd_per_hour": 0.0,
+        "usd_per_1m_tokens": 0.0,
+        "usd_per_1k_requests": 0.0,
+        "energy_wh_per_1k_tokens": 0.0
+      },
+      "micro": {
+        "math_acc": 0.0,
+        "math_n": 5,
+        "json_valid": 0.0,
+        "tool_call_ok": 0.0,
+        "detail": {
+          "math": []
+        }
+      },
+      "context_max": 8192
+    },
+    {
+      "name": "glm-4-9b-chat",
+      "maker": "vLLM · BF16",
+      "quality": {
+        "gsm8k": 57.4,
+        "humaneval": 47.6,
+        "minerva_math_algebra": 34.5,
+        "minerva_math_counting_and_prob": 18.1,
+        "minerva_math_geometry": 16.3,
+        "minerva_math_intermediate_algebra": 8.8,
+        "minerva_math_num_theory": 15.0,
+        "minerva_math_prealgebra": 48.6,
+        "minerva_math_precalc": 9.5,
+        "minerva_math": 24.2,
+        "mmlu_pro_biology": 66.5,
+        "mmlu_pro_business": 51.7,
+        "mmlu_pro_chemistry": 36.8,
+        "mmlu_pro_computer_science": 46.6,
+        "mmlu_pro_economics": 60.0,
+        "mmlu_pro_engineering": 19.2,
+        "mmlu_pro_health": 52.8,
+        "mmlu_pro_history": 46.5,
+        "mmlu_pro_law": 28.3,
+        "mmlu_pro_math": 50.0,
+        "mmlu_pro_other": 48.4,
+        "mmlu_pro_philosophy": 40.9,
+        "mmlu_pro_physics": 40.4,
+        "mmlu_pro_psychology": 60.0,
+        "mmlu_pro": 45.2,
+        "mbpp": 56.2,
+        "ifeval": 69.9,
+        "gpqa": 18.8
+      },
+      "quality_categories": {
+        "gsm8k": {
+          "metric": "exact_match,flexible-extract",
+          "strict_match": 0.33358605003790753,
+          "sample_len": 1319,
+          "source": "out/lmeval_glm_resumable/gsm8k/zai-org__glm-4-9b-chat/results_2026-07-22T07-45-10.590295.json"
+        },
+        "minerva_math": {
+          "metric": "math_verify,none (weighted by sample_len)",
+          "subsets": {
+            "algebra": 0.34540859309182814,
+            "counting_and_prob": 0.18143459915611815,
+            "geometry": 0.162839248434238,
+            "intermediate_algebra": 0.08748615725359911,
+            "num_theory": 0.15,
+            "prealgebra": 0.4856486796785304,
+            "precalc": 0.09523809523809523
+          },
+          "source": "out/lmeval_glm_resumable/minerva_math/zai-org__glm-4-9b-chat/results_2026-07-22T21-11-58.133723.json",
+          "n_total": 5000
+        },
+        "mmlu_pro": {
+          "metric": "exact_match,custom-extract",
+          "sample_len": 12032,
+          "source": "out/lmeval_glm_resumable/mmlu_pro/zai-org__glm-4-9b-chat/results_2026-07-25T07-38-08.354265.json"
+        },
+        "humaneval": {
+          "metric": "pass@1,create_test",
+          "task": "humaneval_instruct",
+          "sample_len": 164,
+          "source": "out/lmeval_glm-4-9b-chat_queue/humaneval_instruct/glm-4-9b-chat/results_rescored_2026-08-09T08-06-34.json",
+          "task_variant": "humaneval_instruct"
+        },
+        "mbpp": {
+          "metric": "pass_at_1,none",
+          "task": "mbpp_instruct",
+          "sample_len": 500,
+          "source": "out/lmeval_glm-4-9b-chat_queue/mbpp_instruct/glm-4-9b-chat/results_rescored_2026-08-09T08-06-45.json"
+        },
+        "ifeval": {
+          "metric": "prompt_level_loose_acc,none",
+          "sample_len": 541,
+          "source": "out/lmeval_glm-4-9b-chat_queue/ifeval/glm-4-9b-chat/results_2026-08-09T07-56-20.174134.json"
+        },
+        "gpqa": {
+          "metric": "exact_match,flexible-extract",
+          "task": "gpqa_main_generative_n_shot",
+          "sample_len": 448,
+          "source": "out/lmeval_glm-4-9b-chat_queue/gpqa_main_generative_n_shot/glm-4-9b-chat/results_2026-08-09T08-00-56.467792.json"
+        }
+      },
+      "perf": {
+        "n": 12,
+        "ok": 12,
+        "ttft_s_mean": 0.0287,
+        "ttft_s_p90": 0.0294,
+        "ttft_s_p95": 0.0294,
+        "latency_s_p50": 6.1283,
+        "latency_s_p90": 6.1361,
+        "latency_s_p95": 6.1379,
+        "latency_s_p99": 6.1392,
+        "gen_tok_s_mean": 42.0,
+        "gen_tok_s_median": 41.97,
+        "prefill_tok_s_mean": 836.39,
+        "prompt_len_tokens": 24,
+        "max_tokens": 256
+      },
+      "hardware": {
+        "samples": 1590,
+        "duration_s": 159.215,
+        "energy_wh": 12.361137,
+        "avg_power_w": 279.52,
+        "max_power_w": 335.1,
+        "peak_vram_mb": 24188.6,
+        "avg_util_pct": 95.4,
+        "max_temp_c": 68.0,
+        "source": "pynvml",
+        "vram_note": "VRAM у vLLM/SGLang преаллоцирована (gpu_memory_utilization); peak_vram_mb отражает резерв, а не рабочий набор."
+      },
+      "cost": {
+        "usd_per_hour": 0.11671,
+        "usd_per_1m_tokens": 0.7719,
+        "usd_per_1k_requests": 0.30876,
+        "energy_wh_per_1k_tokens": 1.849,
+        "assumptions": {
+          "gpu_price": 1800.0,
+          "gpu_life_hours": 26280,
+          "electricity_price_kwh": 0.15,
+          "pue": 1.15
+        }
+      },
+      "micro": {
+        "math_acc": 0.8,
+        "math_n": 5,
+        "json_valid": 0.0,
+        "tool_call_ok": 0.0,
+        "detail": {
+          "math": [
+            {
+              "gold": 43,
+              "got": 43.0,
+              "ok": true
+            },
+            {
+              "gold": 260,
+              "got": 260.0,
+              "ok": true
+            },
+            {
+              "gold": 21,
+              "got": 21.0,
+              "ok": true
+            },
+            {
+              "gold": 170,
+              "got": 75.0,
+              "ok": false
+            },
+            {
+              "gold": 391,
+              "got": 391.0,
+              "ok": true
+            }
+          ]
+        }
+      },
+      "context_max": 8192
+    },
+    {
+      "name": "ollama-qwen3-8b",
+      "maker": "Ollama · GGUF Q4_K_M",
+      "quality": {
+        "gsm8k": 79.4,
+        "minerva_math": 56.3,
+        "humaneval": 47.6,
+        "mbpp": 41.8,
+        "ifeval": 79.9,
+        "gpqa": 29.0,
+        "mmlu_pro": 53.0
+      },
+      "quality_categories": {
+        "gsm8k": {
+          "metric": "exact_match,flexible-extract",
+          "strict_match": 0.7179681576952237,
+          "sample_len": 1319,
+          "source": "out/lmeval_ollama-qwen3-8b_queue/gsm8k_nothink/qwen3__8b/qwen3__8b/results_2026-08-09T14-36-32.177583.json"
+        },
+        "minerva_math": {
+          "metric": "math_verify,none (weighted by sample_len)",
+          "subsets": {
+            "algebra": 0.7843302443133952,
+            "counting_and_prob": 0.5991561181434599,
+            "geometry": 0.430062630480167,
+            "intermediate_algebra": 0.24584717607973422,
+            "num_theory": 0.524074074074074,
+            "prealgebra": 0.8082663605051664,
+            "precalc": 0.33516483516483514
+          },
+          "source": "out/lmeval_ollama-qwen3-8b_queue/minerva_math_nothink/qwen3__8b/qwen3__8b/results_2026-08-12T05-44-19.577688.json",
+          "n_total": 5000
+        },
+        "mbpp": {
+          "metric": "pass_at_1,none",
+          "task": "mbpp_instruct",
+          "sample_len": 500,
+          "source": "out/lmeval_ollama-qwen3-8b_queue/mbpp_instruct_nothink/qwen3__8b/qwen3__8b/results_rescored_2026-08-10T08-36-17.json"
+        },
+        "mmlu_pro": {
+          "metric": "exact_match,custom-extract",
+          "sample_len": 12032,
+          "source": "out/lmeval_ollama-qwen3-8b_queue/mmlu_pro/qwen3__8b/results_2026-08-03T02-31-14.787718.json"
+        },
+        "humaneval": {
+          "metric": "pass@1,create_test",
+          "task": "humaneval_instruct",
+          "sample_len": 164,
+          "source": "out/lmeval_ollama-qwen3-8b_queue/humaneval_instruct_nothink/qwen3__8b/qwen3__8b/results_2026-08-09T17-40-49.705153.json",
+          "task_variant": "humaneval_instruct"
+        },
+        "ifeval": {
+          "metric": "prompt_level_loose_acc,none",
+          "sample_len": 541,
+          "source": "out/lmeval_ollama-qwen3-8b_queue/ifeval/qwen3__8b/results_2026-08-04T12-48-35.471970.json"
+        },
+        "gpqa": {
+          "metric": "exact_match,flexible-extract",
+          "task": "gpqa_main_generative_n_shot",
+          "sample_len": 448,
+          "source": "out/lmeval_ollama-qwen3-8b_queue/gpqa_main_generative_n_shot_nothink/qwen3__8b/qwen3__8b/results_2026-08-09T20-14-58.827324.json"
+        }
+      },
+      "perf": {
+        "n": 12,
+        "ok": 0,
+        "ttft_s_mean": 0.0,
+        "ttft_s_p90": 0.0,
+        "ttft_s_p95": 0.0,
+        "latency_s_p50": 0.0,
+        "latency_s_p90": 0.0,
+        "latency_s_p95": 0.0,
+        "latency_s_p99": 0.0,
+        "gen_tok_s_mean": 0.0,
+        "gen_tok_s_median": 0.0,
+        "prefill_tok_s_mean": 0.0,
+        "prompt_len_tokens": 23,
+        "max_tokens": 256
+      },
+      "hardware": {
+        "samples": 230,
+        "duration_s": 22.96,
+        "energy_wh": 0.353684,
+        "avg_power_w": 55.42,
+        "max_power_w": 57.61,
+        "peak_vram_mb": 864.6,
+        "avg_util_pct": 0.0,
+        "max_temp_c": 38.0,
+        "source": "pynvml",
+        "vram_note": "VRAM для llama.cpp/ollama отражает фактическую загрузку весов + KV-cache."
+      },
+      "cost": {
+        "usd_per_hour": 0.07805,
+        "usd_per_1m_tokens": 21.6814,
+        "usd_per_1k_requests": 8.67257,
+        "energy_wh_per_1k_tokens": 15.394,
+        "assumptions": {
+          "gpu_price": 1800.0,
+          "gpu_life_hours": 26280,
+          "electricity_price_kwh": 0.15,
+          "pue": 1.15
+        }
+      },
+      "micro": {
+        "math_acc": 0.0,
+        "math_n": 5,
+        "json_valid": 0.0,
+        "tool_call_ok": 0.0,
+        "detail": {
+          "math": [
+            {
+              "gold": 43,
+              "got": null,
+              "ok": false
+            },
+            {
+              "gold": 260,
+              "got": null,
+              "ok": false
+            },
+            {
+              "gold": 21,
+              "got": null,
+              "ok": false
+            },
+            {
+              "gold": 170,
+              "got": null,
+              "ok": false
+            },
+            {
+              "gold": 391,
+              "got": null,
+              "ok": false
+            }
+          ]
+        }
+      },
+      "context_max": 32768
+    },
+    {
+      "name": "qwen2.5-vl-7b",
+      "maker": "vLLM · BF16",
+      "quality": {
+        "gsm8k": 67.9,
+        "minerva_math": 18.6,
+        "mmlu_pro": 50.1,
+        "mbpp": 52.4,
+        "ifeval": 66.5,
+        "gpqa": 14.1
+      },
+      "quality_categories": {
+        "gsm8k": {
+          "metric": "exact_match,flexible-extract",
+          "strict_match": 0.15466262319939347,
+          "sample_len": 1319,
+          "source": "out/lmeval_qwen2.5-vl-7b_queue/gsm8k/Qwen2.5-VL-7B-Instruct/results_2026-07-29T19-42-35.669090.json"
+        },
+        "minerva_math": {
+          "metric": "math_verify,none (weighted by sample_len)",
+          "subsets": {
+            "algebra": 0.2855939342881213,
+            "counting_and_prob": 0.11392405063291139,
+            "geometry": 0.15031315240083507,
+            "intermediate_algebra": 0.06201550387596899,
+            "num_theory": 0.13703703703703704,
+            "prealgebra": 0.3455797933409874,
+            "precalc": 0.06593406593406594
+          },
+          "source": "out/lmeval_qwen2.5-vl-7b_queue/minerva_math/Qwen2.5-VL-7B-Instruct/results_2026-07-30T01-34-59.617343.json",
+          "n_total": 5000
+        },
+        "mmlu_pro": {
+          "metric": "exact_match,custom-extract",
+          "sample_len": 12032,
+          "source": "out/lmeval_qwen2.5-vl-7b_queue/mmlu_pro/Qwen2.5-VL-7B-Instruct/results_2026-07-30T17-09-10.418905.json"
+        },
+        "humaneval": {
+          "metric": "pass@1,create_test",
+          "task": "humaneval_instruct",
+          "sample_len": 164,
+          "source": "out/lmeval_qwen2.5-vl-7b_queue/humaneval_instruct_phase1/Qwen2.5-VL-7B-Instruct/Qwen2.5-VL-7B-Instruct/results_rescored_2026-08-11T12-59-26.json",
+          "task_variant": "humaneval_instruct",
+          "rescored_offline": true
+        },
+        "ifeval": {
+          "metric": "prompt_level_loose_acc,none",
+          "sample_len": 541,
+          "source": "out/lmeval_qwen2.5-vl-7b_queue/ifeval/Qwen2.5-VL-7B-Instruct/Qwen2.5-VL-7B-Instruct/results_2026-08-09T08-54-42.787772.json"
+        },
+        "gpqa": {
+          "metric": "exact_match,flexible-extract",
+          "task": "gpqa_main_generative_n_shot",
+          "sample_len": 448,
+          "source": "out/lmeval_qwen2.5-vl-7b_queue/gpqa_main_generative_n_shot/Qwen2.5-VL-7B-Instruct/Qwen2.5-VL-7B-Instruct/results_2026-08-09T09-03-31.049876.json"
+        },
+        "mbpp": {
+          "metric": "pass_at_1,none",
+          "task": "mbpp_instruct",
+          "sample_len": 500,
+          "source": "out/lmeval_qwen2.5-vl-7b_queue/mbpp_instruct_rerun2/Qwen2.5-VL-7B-Instruct/Qwen2.5-VL-7B-Instruct/results_rescored_2026-08-09T15-03-35.json"
+        }
+      },
+      "perf": {
+        "n": 12,
+        "ok": 12,
+        "ttft_s_mean": 0.0365,
+        "ttft_s_p90": 0.0373,
+        "latency_s_p50": 4.5239,
+        "latency_s_p90": 4.5595,
+        "latency_s_p99": 4.59,
+        "gen_tok_s_mean": 56.97,
+        "gen_tok_s_median": 57.05,
+        "prefill_tok_s_mean": 1204.82,
+        "prompt_len_tokens": 44,
+        "max_tokens": 256,
+        "error_summary": ""
+      },
+      "hardware": {
+        "samples": 546,
+        "duration_s": 54.657,
+        "energy_wh": 0.196649,
+        "avg_power_w": 12.97,
+        "max_power_w": 13.4,
+        "peak_vram_mb": 23713.9,
+        "avg_util_pct": 0.0,
+        "max_temp_c": 36.0,
+        "source": "pynvml",
+        "vram_note": "VRAM у vLLM/SGLang преаллоцирована (gpu_memory_utilization); peak_vram_mb отражает резерв, а не рабочий набор."
+      },
+      "cost": {
+        "usd_per_hour": 0.11578,
+        "usd_per_1m_tokens": 0.5377,
+        "usd_per_1k_requests": 0.21508,
+        "energy_wh_per_1k_tokens": 1.273,
+        "assumptions": {
+          "gpu_price": 1800.0,
+          "gpu_life_hours": 26280,
+          "electricity_price_kwh": 0.15,
+          "pue": 1.15
+        }
+      },
+      "micro": {
+        "math_acc": 1.0,
+        "math_n": 5,
+        "json_valid": 1.0,
+        "tool_call_ok": 0.0,
+        "detail": {
+          "math": [
+            {
+              "gold": 43,
+              "got": 43.0,
+              "ok": true
+            },
+            {
+              "gold": 260,
+              "got": 260.0,
+              "ok": true
+            },
+            {
+              "gold": 21,
+              "got": 21.0,
+              "ok": true
+            },
+            {
+              "gold": 170,
+              "got": 170.0,
+              "ok": true
+            },
+            {
+              "gold": 391,
+              "got": 391.0,
+              "ok": true
+            }
+          ]
+        }
+      },
+      "context_max": 8192
+    },
+    {
+      "name": "qwen3-8b-bf16",
+      "maker": "vLLM · BF16",
+      "quality": {
+        "gsm8k": 84.5,
+        "minerva_math": 40.5,
+        "humaneval": 86.0,
+        "mbpp": 60.8,
+        "ifeval": 36.8,
+        "gpqa": 30.6,
+        "mmlu_pro": 58.7
+      },
+      "quality_categories": {
+        "gsm8k": {
+          "metric": "exact_match,flexible-extract",
+          "strict_match": 0.7846853677028052,
+          "sample_len": 1319,
+          "source": "out/lmeval_qwen3-8b-bf16_queue/gsm8k_nothink/Qwen3-8B/Qwen3-8B/results_2026-08-07T06-15-50.442858.json"
+        },
+        "minerva_math": {
+          "metric": "math_verify,none (weighted by sample_len)",
+          "subsets": {
+            "algebra": 0.5762426284751474,
+            "counting_and_prob": 0.4177215189873418,
+            "geometry": 0.2818371607515658,
+            "intermediate_algebra": 0.18161683277962348,
+            "num_theory": 0.3388888888888889,
+            "prealgebra": 0.6326061997703789,
+            "precalc": 0.20146520146520147
+          },
+          "source": "out/lmeval_qwen3-8b-bf16_queue/minerva_math/Qwen3-8B_nothink/results_2026-08-07T16-15-37.915886.json",
+          "n_total": 5000
+        },
+        "mmlu_pro": {
+          "metric": "exact_match,custom-extract",
+          "sample_len": 12032,
+          "source": "out/lmeval_qwen3-8b-bf16_queue/mmlu_pro/Qwen3-8B/results_2026-07-29T17-59-12.910287.json"
+        },
+        "humaneval": {
+          "metric": "pass@1,create_test",
+          "task": "humaneval_instruct",
+          "sample_len": 164,
+          "source": "out/lmeval_qwen3-8b-bf16_queue/humaneval_instruct/Qwen3-8B/results_rescored_2026-08-06T11-40-06.json",
+          "task_variant": "humaneval_instruct"
+        },
+        "mbpp": {
+          "metric": "pass_at_1,none",
+          "task": "mbpp_instruct",
+          "sample_len": 500,
+          "source": "out/lmeval_qwen3-8b-bf16_queue/mbpp_instruct/Qwen3-8B/results_rescored_2026-08-06T14-14-13.json"
+        },
+        "ifeval": {
+          "metric": "prompt_level_loose_acc,none",
+          "sample_len": 541,
+          "source": "out/lmeval_qwen3-8b-bf16_queue/ifeval/Qwen3-8B_new/results_2026-08-07T08-42-42.279757.json"
+        },
+        "gpqa": {
+          "metric": "exact_match,flexible-extract",
+          "task": "gpqa_main_generative_n_shot",
+          "sample_len": 448,
+          "source": "out/lmeval_qwen3-8b-bf16_queue/gpqa_main_generative_n_shot/Qwen3-8B_nothink/Qwen3-8B/results_2026-08-09T07-18-53.443139.json"
+        }
+      },
+      "perf": {
+        "n": 12,
+        "ok": 0,
+        "ttft_s_mean": 0.0,
+        "ttft_s_p90": 0.0,
+        "ttft_s_p95": 0.0,
+        "latency_s_p50": 0.0,
+        "latency_s_p90": 0.0,
+        "latency_s_p95": 0.0,
+        "latency_s_p99": 0.0,
+        "gen_tok_s_mean": 0.0,
+        "gen_tok_s_median": 0.0,
+        "prefill_tok_s_mean": 0.0,
+        "prompt_len_tokens": 23,
+        "max_tokens": 256
+      },
+      "hardware": {
+        "samples": 1,
+        "duration_s": 0.066,
+        "energy_wh": 0.0,
+        "avg_power_w": 294.65,
+        "max_power_w": 294.65,
+        "peak_vram_mb": 22898.6,
+        "avg_util_pct": 95.0,
+        "max_temp_c": 61.0,
+        "source": "pynvml",
+        "vram_note": "VRAM у vLLM/SGLang преаллоцирована (gpu_memory_utilization); peak_vram_mb отражает резерв, а не рабочий набор."
+      },
+      "cost": {
+        "usd_per_hour": 0.11932,
+        "usd_per_1m_tokens": 33.1445,
+        "usd_per_1k_requests": 13.25781,
+        "energy_wh_per_1k_tokens": 81.847,
+        "assumptions": {
+          "gpu_price": 1800.0,
+          "gpu_life_hours": 26280,
+          "electricity_price_kwh": 0.15,
+          "pue": 1.15
+        }
+      },
+      "micro": {
+        "math_acc": 0.0,
+        "math_n": 5,
+        "json_valid": 0.0,
+        "tool_call_ok": 0.0,
+        "detail": {
+          "math": [
+            {
+              "gold": 43,
+              "got": null,
+              "ok": false
+            },
+            {
+              "gold": 260,
+              "got": null,
+              "ok": false
+            },
+            {
+              "gold": 21,
+              "got": null,
+              "ok": false
+            },
+            {
+              "gold": 170,
+              "got": null,
+              "ok": false
+            },
+            {
+              "gold": 391,
+              "got": null,
+              "ok": false
+            }
+          ]
+        }
+      },
+      "context_max": 8192
+    }
+  ]
+}

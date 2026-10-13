@@ -1,0 +1,50 @@
+# Домен Vision/OCR — отдельный от core-7.
+# Веса decision.yaml.vision_ocr остаются; coverage vision считается независимо.
+
+domain: vision_ocr
+exclude_from_core7: true
+
+benches:
+  docvqa:
+    dataset: DocVQA_VAL
+    primary_metric: anls
+    normalize: "<=1 else /100"
+  ocrbench:
+    dataset: OCRBench
+    alt_dataset: OCRBench_MINI
+    primary_metric: Final Score
+    normalize: "<=1.5 keep; else /1000"
+  chartqa:
+    dataset: ChartQA_TEST
+    primary_metric: overall
+    optional: true
+  mmmu:
+    dataset: MMMU_DEV_VAL
+    primary_metric: overall
+    optional: true
+
+pilot_first: [docvqa, ocrbench]
+
+serving:
+  adapter: GPT4V  # VLMEvalKit OpenAI-compatible via OPENAI_API_BASE
+  smoke: image_url_1x1_png
+  env_execute: LLMBENCH_VL_EXECUTE
+  env_python: LLMBENCH_VLMEVAL_PYTHON
+  venv: .venv-vlmeval
+
+outputs:
+  results_root: out/vlmeval_<model>_queue
+  card_fields:
+    - vision.status
+    - vision.docvqa
+    - vision.ocrbench
+    - vision_comparison
+    - quality.docvqa   # только при реальном float
+    - quality.ocrbench
+    - quality_meta.sources.<bench>
+
+safety:
+  never_touch_gpu0_triton: true
+  default_gpu_id: 1
+  min_free_mib: 18000
+  no_fake_zero_scores_in_quality: true

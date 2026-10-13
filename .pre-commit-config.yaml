@@ -1,0 +1,105 @@
+repos:
+  # Black code formatter
+  - repo: https://github.com/psf/black
+    rev: 24.3.0
+    hooks:
+      - id: black
+        name: Black code formatter
+        language: python
+        entry: .venv/bin/black
+        args: [--line-length=100, --target-version=py310,py311,py312]
+        types_or: [python]
+
+  # Ruff linter & formatter
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.7.0
+    hooks:
+      - id: ruff
+        name: Ruff linter & formatter
+        language: python
+        entry: .venv/bin/ruff
+        args: [check, --fix, --line-length=100, --target-version=py310]
+        types_or: [python]
+
+
+  # Pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        name: Trim Trailing Whitespace
+        language: system
+        entry: trailing-whitespace-fixer
+        types: [python, markdown]
+
+      - id: end-of-file-fixer
+        name: Fix End of Files
+        language: system
+        entry: end-of-file-fixer
+        types: [python]
+
+      - id: check-yaml
+        name: Check YAML files
+        language: system
+        entry: check-yaml
+        files: \.yaml$
+
+      - id: check-added-large-files
+        name: Check for added large files
+        language: system
+        entry: check-added-large-files
+        args: [--maxkb=1000, --enforce-all]
+
+# Local hooks
+  # Mypy type checking
+  - repo: local
+    hooks:
+      - id: mypy
+        name: Mypy type checker
+        language: system
+        entry: .venv/bin/mypy
+        args: [--ignore-missing-imports, --warn-unused-ignores]
+        files: ^(llmbench/|scripts/)
+        pass_filenames: true
+
+  # Pytest testing
+  - repo: local
+    hooks:
+      - id: pytest
+        name: Run tests
+        language: system
+        entry: .venv/bin/pytest
+        args: [tests/, -v, --tb=short, --cov=llmbench]
+        pass_filenames: false
+
+  # Security
+  - repo: https://github.com/trufflesecurity/trufflehog
+    rev: v0.3.0
+    hooks:
+      - id: trufflehog
+        name: TruffleHog secret scanner
+        language: system
+        entry: .venv/bin/trufflehog
+        args: [--exclude ^LICENSE$, ^.*/tests/.*, ^requirements*.txt$]
+        pass_filenames: true
+
+  # Documentation
+  - repo: local
+    hooks:
+      - id: check-docstrings
+        name: Check docstrings
+        language: python
+        entry: .venv/bin/ruff
+        args: [check, select, --convention=google, --ignore-module=__init__]
+        files: ^(llmbench/|scripts/)
+
+# Configuration
+default_language_version:
+  python: python3
+
+ci:
+  autofix_commit_msg: 'style: [pre-commit] fixes'
+  autofix_prs: true
+  skip: [migrate, coverage]
+  fail_fast: false
+  verbose: false

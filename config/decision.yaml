@@ -1,0 +1,52 @@
+# Конфиг карточки РЕШЕНИЯ (adoption decision) — то, чего нет в ML-команды.
+# Веса измеримых доменов, эталонные цены API для сравнения TCO, пороги вердикта.
+
+scoring:
+  # Веса складываются в 1.0. Vision исключается и веса перенормируются,
+  # если модель text-only. Домены без данных исключаются из суммы, но
+  # снижают coverage (полноту), а низкая полнота блокирует вердикт "внедрять".
+  weights:
+    reasoning:          0.18   # MMLU-Pro, GPQA, BBH
+    coding:             0.12   # HumanEval, LiveCodeBench, MBPP
+    math:               0.10   # GSM8K, MATH, AIME
+    multilingual_ru:    0.08   # ruMMLU, Russian SuperGLUE
+    long_context:       0.07   # RULER, Needle-in-Haystack
+    vision_ocr:         0.05   # DocVQA, OCRBench, MMMU (drop if text-only)
+    tool_agent:         0.12   # BFCL, tool-call accuracy
+    instruction_json:   0.06   # IFEval, JSON validity
+    performance:        0.10   # tok/s + TTFT на целевом железе
+    economics:          0.07   # $/1M vs эталон API
+    reliability_safety: 0.05   # 1 - hallucination, prompt-injection, safety
+
+  targets:
+    gen_tok_s_full: 40.0       # ток/с, при котором performance-домен = 1.0
+    ttft_s_ok: 1.0             # TTFT, ниже которого штрафа нет
+
+  verdict:
+    min_coverage: 0.60         # ниже — "недостаточно данных", вердикт не выдаётся
+    adopt: 0.75                # overall >= adopt и нет блокеров -> внедрять
+    pilot: 0.60                # overall >= pilot -> пилот/shadow
+
+# Эталонные цены облачных API ($/1M токенов вывода) для сравнения TCO.
+# ОБНОВЛЯЙТЕ вручную — цены меняются; это не котировки, а ориентир.
+api_reference_prices_usd_per_1m:
+  frontier_cloud: 15.0
+  mid_cloud: 3.0
+  small_cloud: 0.50
+
+# Baseline-модели для колонки сравнения в capability-таблице.
+# Значения — публичные ориентиры; при наличии собственного прогона заменяются.
+baselines:
+  Qwen3-30B-A3B:
+    mmlu_pro: 0.66
+    humaneval: 0.83
+    gsm8k: 0.91
+  Gemma-4-31B:
+    mmlu_pro: 0.60
+    humaneval: 0.74
+    gsm8k: 0.88
+
+# Блокирующие риски: при срабатывании вердикт не выше "пилот".
+blocking_risks:
+  vram_budget_mb: 24000        # 4090
+  require_commercial_license: true   # non-commercial -> блокер для прода

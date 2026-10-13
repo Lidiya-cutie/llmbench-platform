@@ -1,0 +1,84 @@
+[project]
+name = "llmbench-4090"
+version = "0.2.0"
+description = "Minimal but functional platform for evaluating local LLMs on RTX 4090"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "LLM Infrastructure Team"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "pynvml>=11.0.0",
+    "torch>=2.0.0",
+    "lm-eval[api]>=0.4.0",
+    "huggingface_hub>=0.20.0",
+    "pyyaml>=6.0",
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "matplotlib>=3.5.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+]
+
+dashboard = [
+    "streamlit>=1.20.0",
+    "plotly>=5.0.0",
+    "altair>=5.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Lidiya-cutie/llmbench"
+Repository = "https://github.com/Lidiya-cutie/llmbench.git"
+
+[build-system]
+requires = ["setuptools>=68.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E", "F", "W", "I", "N"]
+ignore = []
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[project.scripts]
+llmbench-eval = "llmbench.lmeval:run_lm_eval"
+llmbench-compare = "scripts.compare_models:main"
+llmbench-evaluate = "scripts.evaluate_model:main"

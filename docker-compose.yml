@@ -1,0 +1,92 @@
+# docker-compose.yml — llmbench production stack
+#
+# Развёртывание:
+#   cp .env.example .env  # отредактировать
+#   docker compose up -d vllm-gpu0
+#   docker compose up -d dashboard
+#
+# Сервисы:
+#   vllm-gpu0  — vLLM inference на GPU0 (текстовые модели)
+#   vllm-gpu1  — vLLM inference на GPU1 (VL модели, опционально)
+#   dashboard  — HTTP сервер дашборда (статика)
+
+services:
+  vllm-gpu0:
+    image: ${VLLM_IMAGE:-mlops-triton-vllm:24.12-qwen3}
+    container_name: llmbench-vllm-gpu0
+    command: >
+      vllm serve ${SERVED_MODEL_QWEN3:-Qwen/Qwen3-8B}
+      --host 0.0.0.0
+      --port ${VLLM_PORT_GPU0:-8070}
+      --dtype bfloat16
+      --max-model-len 8192
+      --gpu-memory-utilization 0.90
+      --trust-remote-code
+      --served-model-name ${SERVED_MODEL_QWEN3:-Qwen3-8B}
+    ports:
+      - "${VLLM_PORT_GPU0:-8070}:8070"
+    volumes:
+      - ${HF_CACHE_DIR:-/opt/llm-data/.cache_huggingface}:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["0"]
+              capabilities: ["gpu"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:${VLLM_PORT_GPU0:-8070}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+    profiles: ["text"]
+
+  vllm-gpu1:
+    image: ${VLLM_IMAGE:-mlops-triton-vllm:24.12-qwen3}
+    container_name: llmbench-vllm-gpu1
+    command: >
+      vllm serve ${SERVED_MODEL_VL:-Qwen/Qwen2.5-VL-7B-Instruct}
+      --host 0.0.0.0
+      --port ${VLLM_PORT_GPU1:-8077}
+      --dtype bfloat16
+      --max-model-len 8192
+      --gpu-memory-utilization 0.90
+      --trust-remote-code
+      --served-model-name ${SERVED_MODEL_VL:-Qwen2.5-VL-7B-Instruct}
+      --enforce-eager
+    ports:
+      - "${VLLM_PORT_GPU1:-8077}:8077"
+    volumes:
+      - ${HF_CACHE_DIR:-/opt/llm-data/.cache_huggingface}:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["1"]
+              capabilities: ["gpu"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:${VLLM_PORT_GPU1:-8077}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+    profiles: ["vision"]
+
+  dashboard:
+    image: python:3.12-slim
+    container_name: llmbench-dashboard
+    working_dir: /app/out
+    command: >
+      python -m http.server ${DASHBOARD_PORT:-8899}
+      --bind 0.0.0.0
+    ports:
+      - "${DASHBOARD_PORT:-8899}:8899"
+    volumes:
+      - ${LLMBENCH_DIR:-.}:/app
+    restart: unless-stopped
+    depends_on: []
+    profiles: ["dashboard"]

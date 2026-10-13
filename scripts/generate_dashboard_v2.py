@@ -1,0 +1,741 @@
+#!/usr/bin/env python3
+"""
+Dashboard v2 Generator - Профессиональный дашборд со всеми метриками
+
+Генерирует dashboard.html с:
+- Все 33 категории lm-eval (24 MMLU + 9 Minerva)
+- 12+ perf метрик с percentile
+- Hardware секция (7 метрик)
+- Cost метрики (4 метрики)
+- Micro-тесты
+- Expandable секции
+- Interactive детальный view
+
+Использование:
+  python scripts/generate_dashboard_v2.py
+"""
+import json
+from pathlib import Path
+from typing import Dict, List, Any
+
+
+class DashboardDataModel:
+    """Модель данных для дашборда v2"""
+
+    def __init__(self, cards_path: str = "out"):
+        self.cards_path = Path(cards_path)
+        self.models = []
+        self._load_cards()
+
+    def _load_cards(self):
+        """Загрузка и нормализация всех карточек"""
+        for card_file in sorted(self.cards_path.glob("card_*.json")):
+            if ".bak." in card_file.name:
+                continue
+
+            with open(card_file) as f:
+                card = json.load(f)
+
+            self.models.append(self._normalize_card(card))
+
+    def _load_categories_from_source(
+        self,
+        result_path: str,
+        prefix: str,
+        metric_prefs: tuple[str, ...] = ("exact_match,custom-extract", "exact_match,flexible-extract", "exact_match"),
+    ) -> Dict[str, float]:
+        """Загрузка подкатегорий (mmlu_pro_* или minerva_math_*) из results_*.json"""
+        try:
+            p = Path(result_path)
+            if not p.exists():
+                return {}
+            with open(p) as f:
+                results = json.load(f)
+            categories = {}
+            for key, value in results.get("results", {}).items():
+                if not (key.startswith(prefix + "_") and key != prefix):
+                    continue
+                if not isinstance(value, dict):
+                    continue
+                chosen = None
+                for pref in metric_prefs:
+                    for mn, mv in value.items():
+                        if "stderr" in mn or isinstance(mv, bool) or not isinstance(mv, (int, float)):
+                            continue
+                        if pref in mn:
+                            chosen = float(mv)
+                            break
+                    if chosen is not None:
+                        break
+                if chosen is not None:
+                    categories[key] = chosen
+            return categories
+        except Exception as e:
+            print(f"   Warning: Could not load {prefix} from {result_path}: {e}")
+            return {}
+
+    def _load_mmlu_pro_from_sources(self, card: Dict[str, Any]) -> Dict[str, float]:
+        """Загрузка mmlu_pro категорий из результатов lm_eval"""
+        quality_meta = card.get("quality_meta", {})
+        sources = quality_meta.get("sources", {})
+
+        if "mmlu_pro" in sources and isinstance(sources["mmlu_pro"], dict):
+            source_file = sources["mmlu_pro"].get("source")
+            if source_file:
+                return self._load_categories_from_source(source_file, "mmlu_pro")
+
+        return {}
+
+    def _normalize_card(self, card: Dict[str, Any]) -> Dict[str, Any]:
+        """Нормализация карточки в unified формат для дашборда"""
+        quality = card.get("quality", {}).copy()  # Copy to avoid mutation
+        perf = card.get("perf", {})
+        hardware = card.get("hardware", {})
+        cost = card.get("cost", {})
+        micro = card.get("micro", {})
+
+        # Загружаем mmlu_pro категории из results_*.json
+        mmlu_pro_from_sources = self._load_mmlu_pro_from_sources(card)
+        if mmlu_pro_from_sources:
+            quality.update(mmlu_pro_from_sources)
+
+        # Загружаем minerva категории из results_*.json
+        _sources = card.get("quality_meta", {}).get("sources", {})
+        minerva_source = _sources.get("minerva_math", {})
+        if isinstance(minerva_source, dict) and minerva_source.get("source"):
+            minerva_from_source = self._load_categories_from_source(
+                minerva_source["source"],
+                "minerva_math",
+                metric_prefs=("math_verify,none", "math_verify", "exact_match,none", "exact_match"),
+            )
+            if minerva_from_source:
+                quality.update(minerva_from_source)
+
+        # Base normalization function
+        def norm(v):
+            if not isinstance(v, (int, float)):
+                return 0
+            return round(v * 100, 1) if 0 < v <= 1 else round(v, 1)
+
+        # Extract MMLU-PRO categories (24 категории)
+        mmlu_categories = {k: norm(v) for k, v in quality.items()
+                          if k.startswith("mmlu_pro_") and k != "mmlu_pro"}
+
+        # Extract Minerva categories (9 категорий)
+        minerva_categories = {k: norm(v) for k, v in quality.items()
+                            if k.startswith("minerva_math_") and k != "minerva_math"}
+
+        # Calculate aggregates
+        # For mmlu_pro: use provided value or calculate average from categories
+        if quality.get("mmlu_pro", 0) > 0:
+            mmlu_pro_avg = norm(quality.get("mmlu_pro", 0))
+        elif mmlu_categories:
+            mmlu_pro_avg = round(sum(mmlu_categories.values()) / len(mmlu_categories), 1)
+        else:
+            mmlu_pro_avg = 0
+
+        minerva_avg = norm(quality.get("minerva_math", 0))
+        gsm8k = norm(quality.get("gsm8k", 0))
+        humaneval = norm(quality.get("humaneval", 0))
+        mbpp = norm(quality.get("mbpp", 0))
+        ifeval = norm(quality.get("ifeval", 0))
+        gpqa = norm(quality.get("gpqa", 0))
+        coding_score = max(humaneval, mbpp)
+
+        # Math score (MAX из minerva/gsm8k)
+        math_score = max(minerva_avg, gsm8k)
+
+        # Has quality flag
+        has_quality = any(v > 0 for v in quality.values())
+
+        return {
+            "name": card.get("name", ""),
+            "maker": f"{card.get('engine', '')} . {card.get('quant_format', '')}",
+            "ev": "v" if has_quality else "e",
+
+            # Quality aggregates
+            "quality": {
+                "mmlu_pro": mmlu_pro_avg,
+                "minerva_math": minerva_avg,
+                "gsm8k": gsm8k,
+                "humaneval": humaneval,
+                "mbpp": mbpp,
+                "ifeval": ifeval,
+                "gpqa": gpqa,
+                "coding": coding_score,
+                "math_max": math_score,
+            },
+
+            # Quality categories (33 total)
+            "quality_categories": {
+                "mmlu_pro": mmlu_categories,
+                "minerva_math": minerva_categories,
+            },
+
+            # Perf metrics (12+ metrics)
+            "perf": {
+                "gen_tok_s_mean": norm(perf.get("gen_tok_s_mean", 0)),
+                "ttft_s_mean": round(perf.get("ttft_s_mean", 0) * 1000, 0),  # ms
+                "gen_tok_s_median": norm(perf.get("gen_tok_s_median", 0)),
+                "prefill_tok_s_mean": norm(perf.get("prefill_tok_s_mean", 0)),
+
+                # Percentiles
+                "ttft_s_p90": round(perf.get("ttft_s_p90", 0) * 1000, 0),
+                "ttft_s_p95": round(perf.get("ttft_s_p95", 0) * 1000, 0),
+                "latency_s_p50": round(perf.get("latency_s_p50", 0) * 1000, 0),
+                "latency_s_p90": round(perf.get("latency_s_p90", 0) * 1000, 0),
+                "latency_s_p95": round(perf.get("latency_s_p95", 0) * 1000, 0),
+                "latency_s_p99": round(perf.get("latency_s_p99", 0) * 1000, 0),
+            },
+
+            # Hardware (7 metrics)
+            "hardware": {
+                "energy_wh": round(hardware.get("energy_wh", 0), 2),
+                "avg_power_w": round(hardware.get("avg_power_w", 0), 1),
+                "max_power_w": round(hardware.get("max_power_w", 0), 1),
+                "peak_vram_mb": round(hardware.get("peak_vram_mb", 0), 0),
+                "avg_util_pct": round(hardware.get("avg_util_pct", 0), 1),
+                "max_temp_c": round(hardware.get("max_temp_c", 0), 1),
+                "samples": hardware.get("samples", 0),
+            },
+
+            # Cost (4 metrics)
+            "cost": {
+                "usd_per_hour": round(cost.get("usd_per_hour", 0), 3),
+                "usd_per_1m_tokens": round(cost.get("usd_per_1m_tokens", 0), 2),
+                "usd_per_1k_requests": round(cost.get("usd_per_1k_requests", 0), 2),
+                "energy_wh_per_1k_tokens": round(cost.get("energy_wh_per_1k_tokens", 0), 2),
+            },
+
+            # Micro (2 metrics)
+            "micro": {
+                "math_acc": norm(micro.get("math_acc", 0)),
+                "math_n": micro.get("math_n", 0),
+            },
+
+            # Context
+            "context_max": card.get("context_max", 8192),
+            "context_normalized": min(100, max(0,
+                ((card.get("context_max", 8192) - 4096) / (32768 - 4096)) * 100)),
+        }
+
+    def to_json(self) -> str:
+        """Сериализация в JSON для JavaScript"""
+        return json.dumps(self.models, ensure_ascii=False)
+
+
+def generate_dashboard_html(models_data: str) -> str:
+    """Генерация HTML дашборда v2"""
+
+    html_template = f'''<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>LLM Bench v2 - Professional Dashboard</title>
+    <style>
+        body {{
+            background: #0E1117;
+            color: #E7EAF0;
+            font-family: system-ui, sans-serif;
+            padding: 28px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }}
+        h1 {{ color: #F2B035; margin-bottom: 8px; }}
+        .subtitle {{ color: #8B95A7; font-size: 14px; margin-bottom: 24px; }}
+
+        /* Use-case selector */
+        .usecase-selector {{
+            margin: 20px 0;
+            padding: 16px;
+            background: #161B24;
+            border: 1px solid #29313F;
+            border-radius: 12px;
+        }}
+        .usecase-label {{
+            font-size: 11px;
+            color: #5B6577;
+            text-transform: uppercase;
+            margin-right: 12px;
+        }}
+        .chip {{
+            display: inline-block;
+            cursor: pointer;
+            padding: 8px 14px;
+            background: #1D2430;
+            border: 1px solid #29313F;
+            border-radius: 10px;
+            color: #8B95A7;
+            margin: 0 4px 8px 0;
+            font-size: 13px;
+            transition: all 0.2s;
+        }}
+        .chip.active {{
+            background: #F2B035;
+            color: #0E1117;
+            font-weight: 600;
+            border-color: #F2B035;
+        }}
+        .chip:hover:not(.active) {{
+            background: #29313F;
+        }}
+
+        /* Main table */
+        table {{
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }}
+        th {{
+            text-align: right;
+            padding: 10px;
+            color: #8B95A7;
+            font-size: 11px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #29313F;
+            cursor: pointer;
+        }}
+        th:first-child {{ text-align: left; }}
+        td {{
+            padding: 10px;
+            text-align: right;
+            border-bottom: 1px solid #1D2430;
+            font-family: monospace;
+        }}
+        td:first-child {{ text-align: left; font-weight: 600; }}
+
+        /* Score badge */
+        .score {{
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 7px;
+            font-weight: 700;
+            color: #0E1117;
+        }}
+
+        /* Detail section */
+        .detail-section {{
+            margin: 20px 0;
+            padding: 20px;
+            background: #161B24;
+            border: 1px solid #29313F;
+            border-radius: 14px;
+        }}
+        .section-header {{
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }}
+        .section-title {{
+            font-size: 16px;
+            font-weight: 600;
+            color: #E7EAF0;
+        }}
+        .expand-icon {{
+            font-size: 12px;
+            color: #8B95A7;
+            transition: transform 0.2s;
+        }}
+        .section-content {{
+            display: none;
+            margin-top: 16px;
+        }}
+        .section-content.expanded {{
+            display: block;
+        }}
+
+        /* Category rows */
+        .category-row {{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 4px 0;
+        }}
+        .category-name {{
+            width: 120px;
+            font-size: 11px;
+            color: #8B95A7;
+        }}
+        .bar-container {{
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+        .bar {{
+            height: 7px;
+            background: #1D2430;
+            border-radius: 4px;
+            overflow: hidden;
+        }}
+        .bar-fill {{
+            height: 100%;
+            border-radius: 4px;
+        }}
+        .category-value {{
+            font-size: 12px;
+            font-family: monospace;
+            min-width: 40px;
+        }}
+
+        /* Hardware grid */
+        .hardware-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }}
+        .hw-metric {{
+            padding: 12px;
+            background: #1D2430;
+            border-radius: 8px;
+        }}
+        .hw-label {{
+            font-size: 10px;
+            color: #8B95A7;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }}
+        .hw-value {{
+            font-size: 16px;
+            font-weight: 600;
+        }}
+
+        /* Cost table */
+        .cost-table {{
+            width: 100%;
+            font-size: 13px;
+        }}
+        .cost-table td {{
+            padding: 8px;
+            border-bottom: 1px solid #29313F;
+        }}
+        .cost-table td:first-child {{
+            color: #8B95A7;
+        }}
+
+        /* Model selector row */
+        .model-row {{
+            cursor: pointer;
+            transition: background 0.2s;
+        }}
+        .model-row:hover {{
+            background: rgba(242, 176, 53, 0.05);
+        }}
+        .model-row.selected {{
+            background: rgba(242, 176, 53, 0.1);
+        }}
+    </style>
+</head>
+<body>
+    <h1>🚀 LLM Bench Console v2</h1>
+    <p class="subtitle">Профессиональный сравнительный анализ локальных LLM на RTX 4090</p>
+
+    <div class="usecase-selector" id="usecase">
+        <span class="usecase-label">Задача:</span>
+        <span class="chip" data-usecase="balanced">Balanced</span>
+        <span class="chip" data-usecase="coding">Coding</span>
+        <span class="chip" data-usecase="reasoning">Reasoning</span>
+        <span class="chip" data-usecase="math">Math</span>
+        <span class="chip" data-usecase="speed">Speed</span>
+        <span class="chip" data-usecase="cost">💰 Cost</span>
+    </div>
+
+    <div id="main-table"></div>
+    <div id="detail-view"></div>
+
+    <script>
+        const MODELS = {models_data};
+
+        // Use-case weights (COST NOW INCLUDED)
+        const USE_CASES = {{
+            balanced: [1, 1, 1, 1, 1, 1],           // Все равны
+            coding: [1.2, 3, 1, 1.3, 0.5, 1.4],     // Coding приоритет
+            reasoning: [3, 0.8, 2, 0.5, 0.5, 1],     // Reasoning приоритет
+            math: [2, 1, 3, 0.7, 0.5, 0.8],        // Math приоритет
+            speed: [0.7, 0.8, 0.6, 3, 0.5, 0.8],    // Speed приоритет
+            cost: [0.8, 0.7, 0.6, 0.8, 3, 0.5]      // COST ПРИОРИТЕТ (НОВЫЙ)
+        }};
+
+        const AXES = ['reasoning', 'coding', 'math', 'speed', 'cost', 'context'];
+
+        // Color scale (unchanged)
+        const cf = v => v >= 90 ? '#57C97E' : v >= 75 ? '#35D0B8' : v >= 50 ? '#F2B035' : v >= 25 ? '#E8894B' : v > 0 ? '#F2685C' : '#5B6577';
+
+        let useCase = 'balanced';
+        let selectedModel = null;
+        let expandedSections = {{}};
+
+        // Calculate score with COST
+        function calculateScore(model, uc) {{
+            const w = USE_CASES[uc];
+            let score = 0, totalWeight = 0;
+
+            // Quality
+            score += model.quality.mmlu_pro * w[0];
+            score += model.quality.coding * w[1];
+            score += model.quality.math_max * w[2];
+            totalWeight += w[0] + w[1] + w[2];
+
+            // Perf
+            const speedScore = Math.min(100, model.perf.gen_tok_s_mean);
+            score += speedScore * w[3];
+            totalWeight += w[3];
+
+            // Cost (INVERTED - lower is better)
+            const costScore = Math.max(0, 100 - model.cost.usd_per_1m_tokens * 10);
+            score += costScore * w[4];
+            totalWeight += w[4];
+
+            // Context
+            score += model.context_normalized * w[5];
+            totalWeight += w[5];
+
+            return score / totalWeight;
+        }}
+
+        // Render main table
+        function renderTable() {{
+            const rows = MODELS.map((m, i) => ({{
+                ...m,
+                _i: i,
+                s: calculateScore(m, useCase)
+            }})).sort((a, b) => b.s - a.s);
+
+            let h = '<table><thead><tr><th>Модель</th><th>Score</th>';
+            h += '<th>Reason</th><th>Coding</th><th>MBPP</th><th>Math</th><th>Speed</th><th>Cost</th><th>Ev</th></tr></thead><tbody>';
+
+            for (const m of rows) {{
+                h += '<tr class="model-row" onclick="selectModel(' + m._i + ')" ' +
+                      (selectedModel === m._i ? 'class="selected"' : '') + '>';
+                h += '<td>' + m.name + '<br><span style="font-size:11px;color:#5B6577">' + m.maker + '</span></td>';
+                h += '<td><span class="score" style="background:' + cf(m.s) + '">' + Math.round(m.s) + '</span></td>';
+                h += '<td>' + (m.quality.mmlu_pro > 0 ? m.quality.mmlu_pro.toFixed(1) : '—') + '</td>';
+                h += '<td>' + (m.quality.coding > 0 ? m.quality.coding.toFixed(1) : '—') + '</td>';
+                h += '<td>' + (m.quality.mbpp > 0 ? m.quality.mbpp.toFixed(1) : '—') + '</td>';
+                h += '<td>' + (m.quality.math_max > 0 ? m.quality.math_max.toFixed(1) : '—') + '</td>';
+                h += '<td>' + (m.perf.gen_tok_s_mean > 0 ? m.perf.gen_tok_s_mean.toFixed(1) : '—') + '</td>';
+                h += '<td>$' + m.cost.usd_per_hour.toFixed(3) + '/h</td>';
+                h += '<td style="font-size:10px">' + (m.ev === 'v' ? '✅' : '⏳') + '</td>';
+                h += '</tr>';
+            }}
+
+            h += '</tbody></table>';
+            document.getElementById('main-table').innerHTML = h;
+        }}
+
+        // Select model and show details
+        function selectModel(index) {{
+            selectedModel = index;
+            renderTable();
+            renderDetailView();
+        }}
+
+        // Render detail view
+        function renderDetailView() {{
+            if (selectedModel === null) return;
+
+            const m = MODELS[selectedModel];
+            let h = '<div class="detail-section">';
+            h += '<h2>' + m.name + '</h2>';
+            h += '<p style="color:#8B95A7">' + m.maker + '</p>';
+
+            // Quality section (33 categories)
+            h += renderQualitySection(m);
+
+            // Perf section (12 metrics)
+            h += renderPerfSection(m);
+
+            // Hardware section (7 metrics)
+            h += renderHardwareSection(m);
+
+            // Cost section (4 metrics)
+            h += renderCostSection(m);
+
+            h += '</div>';
+            document.getElementById('detail-view').innerHTML = h;
+        }}
+
+        function renderQualitySection(m) {{
+            const id = 'quality-' + selectedModel;
+            const expanded = expandedSections[id] ? 'expanded' : '';
+
+            let h = '<div class="section-header" onclick="toggleSection(\\'' + id + '\\')">';
+            h += '<span class="section-title">📊 Quality (lm-eval) - ' +
+                  (Object.keys(m.quality_categories.mmlu_pro).length +
+                   Object.keys(m.quality_categories.minerva_math).length) + ' категорий</span>';
+            h += '<span class="expand-icon">' + (expandedSections[id] ? '▼' : '▶') + '</span>';
+            h += '</div>';
+
+            h += '<div class="section-content ' + expanded + '" id="' + id + '">';
+
+            // MMLU-PRO categories
+            h += '<h4 style="color:#8B95A7;margin:12px 0 8px">MMLU-PRO (24 категории)</h4>';
+            const mmlu = Object.entries(m.quality_categories.mmlu_pro)
+                .sort((a, b) => b[1] - a[1]);
+            for (const [name, value] of mmlu) {{
+                h += '<div class="category-row">';
+                h += '<span class="category-name">' + name.replace('mmlu_pro_', '') + '</span>';
+                h += '<div class="bar-container">';
+                h += '<div class="bar"><div class="bar-fill" style="width:' + value + '%;background:' + cf(value) + '"></div></div>';
+                h += '<span class="category-value">' + value.toFixed(1) + '%</span>';
+                h += '</div></div>';
+            }}
+
+            // Minerva categories
+            h += '<h4 style="color:#8B95A7;margin:12px 0 8px">Minerva Math (9 категорий)</h4>';
+            const minerva = Object.entries(m.quality_categories.minerva_math)
+                .sort((a, b) => b[1] - a[1]);
+            for (const [name, value] of minerva) {{
+                h += '<div class="category-row">';
+                h += '<span class="category-name">' + name.replace('minerva_math_', '') + '</span>';
+                h += '<div class="bar-container">';
+                h += '<div class="bar"><div class="bar-fill" style="width:' + value + '%;background:' + cf(value) + '"></div></div>';
+                h += '<span class="category-value">' + value.toFixed(1) + '%</span>';
+                h += '</div></div>';
+            }}
+
+            h += '</div>';
+            return h;
+        }}
+
+        function renderPerfSection(m) {{
+            const id = 'perf-' + selectedModel;
+            const expanded = expandedSections[id] ? 'expanded' : '';
+
+            let h = '<div class="section-header" onclick="toggleSection(\\'' + id + '\\')">';
+            h += '<span class="section-title">⚡ Performance (12+ метрик)</span>';
+            h += '<span class="expand-icon">' + (expandedSections[id] ? '▼' : '▶') + '</span>';
+            h += '</div>';
+
+            h += '<div class="section-content ' + expanded + '" id="' + id + '">';
+            h += '<table class="cost-table">';
+            h += '<tr><td>Generation speed:</td><td>' + m.perf.gen_tok_s_mean.toFixed(1) + ' tok/s</td></tr>';
+            h += '<tr><td>Median speed:</td><td>' + m.perf.gen_tok_s_median.toFixed(1) + ' tok/s</td></tr>';
+            h += '<tr><td>Prefill speed:</td><td>' + m.perf.prefill_tok_s_mean.toFixed(1) + ' tok/s</td></tr>';
+            h += '<tr><td>TTFT (mean):</td><td>' + m.perf.ttft_s_mean + 'ms</td></tr>';
+            h += '<tr><td>TTFT (p90):</td><td>' + m.perf.ttft_s_p90 + 'ms</td></tr>';
+            h += '<tr><td>TTFT (p95):</td><td>' + m.perf.ttft_s_p95 + 'ms</td></tr>';
+            h += '<tr><td>Latency (p50):</td><td>' + m.perf.latency_s_p50 + 'ms</td></tr>';
+            h += '<tr><td>Latency (p90):</td><td>' + m.perf.latency_s_p90 + 'ms</td></tr>';
+            h += '<tr><td>Latency (p95):</td><td>' + m.perf.latency_s_p95 + 'ms</td></tr>';
+            h += '<tr><td>Latency (p99):</td><td>' + m.perf.latency_s_p99 + 'ms</td></tr>';
+            h += '</table></div>';
+
+            return h;
+        }}
+
+        function renderHardwareSection(m) {{
+            const id = 'hardware-' + selectedModel;
+            const expanded = expandedSections[id] ? 'expanded' : '';
+
+            let h = '<div class="section-header" onclick="toggleSection(\\'' + id + '\\')">';
+            h += '<span class="section-title">🖥️ Hardware (7 метрик)</span>';
+            h += '<span class="expand-icon">' + (expandedSections[id] ? '▼' : '▶') + '</span>';
+            h += '</div>';
+
+            h += '<div class="section-content ' + expanded + '" id="' + id + '">';
+            h += '<div class="hardware-grid">';
+            h += '<div class="hw-metric"><span class="hw-label">VRAM</span><span class="hw-value">' + m.hardware.peak_vram_mb + ' MiB</span></div>';
+            h += '<div class="hw-metric"><span class="hw-label">Avg Power</span><span class="hw-value">' + m.hardware.avg_power_w + 'W</span></div>';
+            h += '<div class="hw-metric"><span class="hw-label">Max Power</span><span class="hw-value">' + m.hardware.max_power_w + 'W</span></div>';
+            h += '<div class="hw-metric"><span class="hw-label">Energy</span><span class="hw-value">' + m.hardware.energy_wh + ' Wh</span></div>';
+            h += '<div class="hw-metric"><span class="hw-label">Utilization</span><span class="hw-value">' + m.hardware.avg_util_pct + '%</span></div>';
+            h += '<div class="hw-metric"><span class="hw-label">Temperature</span><span class="hw-value">' + m.hardware.max_temp_c + '°C</span></div>';
+            h += '</div></div>';
+
+            return h;
+        }}
+
+        function renderCostSection(m) {{
+            const id = 'cost-' + selectedModel;
+            const expanded = expandedSections[id] ? 'expanded' : '';
+
+            let h = '<div class="section-header" onclick="toggleSection(\\'' + id + '\\')">';
+            h += '<span class="section-title">💰 Cost (4 метрики)</span>';
+            h += '<span class="expand-icon">' + (expandedSections[id] ? '▼' : '▶') + '</span>';
+            h += '</div>';
+
+            h += '<div class="section-content ' + expanded + '" id="' + id + '">';
+            h += '<table class="cost-table">';
+            h += '<tr><td>Стоимость часа:</td><td>$' + m.cost.usd_per_hour.toFixed(3) + '/h</td></tr>';
+            h += '<tr><td>Стоимость 1M токенов:</td><td>$' + m.cost.usd_per_1m_tokens.toFixed(2) + '</td></tr>';
+            h += '<tr><td>Стоимость 1K запросов:</td><td>$' + m.cost.usd_per_1k_requests.toFixed(2) + '</td></tr>';
+            h += '<tr><td>Энергия на 1K токенов:</td><td>' + m.cost.energy_wh_per_1k_tokens.toFixed(2) + ' Wh</td></tr>';
+            h += '</table></div>';
+
+            return h;
+        }}
+
+        function toggleSection(id) {{
+            expandedSections[id] = !expandedSections[id];
+            renderDetailView();
+        }}
+
+        // Use-case selector
+        document.querySelectorAll('.chip').forEach(chip => {{
+            chip.addEventListener('click', () => {{
+                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                useCase = chip.dataset.usecase;
+                renderTable();
+            }});
+        }});
+
+        // Initial render
+        document.querySelector('.chip[data-usecase="balanced"]').classList.add('active');
+        renderTable();
+    </script>
+</body>
+</html>'''
+
+    return html_template
+
+
+def main():
+    print("🚀 Генерация Dashboard v2...")
+
+    # Load and normalize data
+    model = DashboardDataModel("out")
+    models_json = model.to_json()
+
+    print(f"   Загружено {len(model.models)} моделей")
+
+    # Check metrics coverage (find model with most data)
+    best_model = max(model.models, key=lambda m: (
+        len(m.get("quality_categories", {}).get("mmlu_pro", {})) +
+        len(m.get("quality_categories", {}).get("minerva_math", {}))
+    ))
+
+    if best_model:
+        mmlu_cats = len(best_model.get("quality_categories", {}).get("mmlu_pro", {}))
+        minerva_cats = len(best_model.get("quality_categories", {}).get("minerva_math", {}))
+        perf_metrics = len([k for k in best_model.get("perf", {}).keys() if "p" in k or "mean" in k])
+        hw_metrics = len(best_model.get("hardware", {}))
+        cost_metrics = len(best_model.get("cost", {}))
+
+        print(f"   Лучший модель: {best_model['name']}")
+        print(f"   MMLU-PRO категорий: {mmlu_cats}")
+        print(f"   Minerva категорий: {minerva_cats}")
+        print(f"   Perf метрик: {perf_metrics}")
+        print(f"   Hardware метрик: {hw_metrics}")
+        print(f"   Cost метрик: {cost_metrics}")
+        print(f"   Всего категорий quality: {mmlu_cats + minerva_cats}")
+
+    # Generate HTML
+    html = generate_dashboard_html(models_json)
+
+    # Save
+    output_path = Path("out/dashboard_v2.html")
+    output_path.write_text(html, encoding="utf-8")
+
+    print(f"   ✅ Создан: {output_path}")
+    print(f"   Размер: {len(html)} bytes")
+    print(f"   Моделей: {len(model.models)}")
+    print(f"\n🌐 Открой в браузере: file://{output_path.absolute()}")
+
+
+if __name__ == "__main__":
+    main()

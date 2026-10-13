@@ -1,0 +1,319 @@
+{
+  "updated_at": "2026-08-07T09:41:43.549409",
+  "comparison_report": {
+    "generated_at": "2026-08-07T09:38:35.100421",
+    "overall_ranking": [
+      {
+        "name": "gemma-3-27b-awq",
+        "score": 0.7088987045454546,
+        "coverage": 4
+      },
+      {
+        "name": "deepseek-v4-flash",
+        "score": 0.6865319242424242,
+        "coverage": 6
+      },
+      {
+        "name": "qwen2.5-vl-7b",
+        "score": 0.45813775,
+        "coverage": 3
+      },
+      {
+        "name": "ollama-qwen3-8b",
+        "score": 0.4290372666666667,
+        "coverage": 3
+      },
+      {
+        "name": "qwen3-8b-bf16",
+        "score": 0.42858125641025635,
+        "coverage": 7
+      },
+      {
+        "name": "glm-4-9b-chat",
+        "score": 0.4243044999999999,
+        "coverage": 3
+      },
+      {
+        "name": "local-27b-27b-ternary",
+        "score": 0.3148897948717948,
+        "coverage": 7
+      }
+    ],
+    "benchmark_winners": {
+      "mmlu_pro": [
+        {
+          "name": "qwen3-8b-bf16",
+          "score": 0.587434,
+          "engine": "vLLM",
+          "quant": "BF16"
+        },
+        {
+          "name": "ollama-qwen3-8b",
+          "score": 0.529505,
+          "engine": "Ollama",
+          "quant": "GGUF Q4_K_M"
+        },
+        {
+          "name": "qwen2.5-vl-7b",
+          "score": 0.500914,
+          "engine": "vLLM",
+          "quant": "BF16"
+        }
+      ],
+      "gsm8k": [
+        {
+          "name": "deepseek-v4-flash",
+          "score": 0.945413,
+          "engine": "vLLM (remote OpenAI-compatible)",
+          "quant": "served (remote vLLM)"
+        },
+        {
+          "name": "gemma-3-27b-awq",
+          "score": 0.8802,
+          "engine": "Triton vLLM",
+          "quant": "AWQ"
+        },
+        {
+          "name": "local-27b-27b-ternary",
+          "score": 0.714177,
+          "engine": "llama.cpp (PrismML fork)",
+          "quant": "GGUF Q2_0 (ternary, 1.58 bpw)"
+        }
+      ],
+      "minerva_math": [
+        {
+          "name": "deepseek-v4-flash",
+          "score": 0.5718,
+          "engine": "vLLM (remote OpenAI-compatible)",
+          "quant": "served (remote vLLM)"
+        },
+        {
+          "name": "glm-4-9b-chat",
+          "score": 0.2418,
+          "engine": "vLLM",
+          "quant": "BF16"
+        },
+        {
+          "name": "qwen2.5-vl-7b",
+          "score": 0.1864,
+          "engine": "vLLM",
+          "quant": "BF16"
+        }
+      ],
+      "humaneval": [
+        {
+          "name": "qwen3-8b-bf16",
+          "score": 0.859756,
+          "engine": "vLLM",
+          "quant": "BF16"
+        },
+        {
+          "name": "gemma-3-27b-awq",
+          "score": 0.841463,
+          "engine": "Triton vLLM",
+          "quant": "AWQ"
+        },
+        {
+          "name": "deepseek-v4-flash",
+          "score": 0.841463,
+          "engine": "vLLM (remote OpenAI-compatible)",
+          "quant": "served (remote vLLM)"
+        }
+      ],
+      "mbpp": [
+        {
+          "name": "deepseek-v4-flash",
+          "score": 0.794,
+          "engine": "vLLM (remote OpenAI-compatible)",
+          "quant": "served (remote vLLM)"
+        },
+        {
+          "name": "local-27b-27b-ternary",
+          "score": 0.654,
+          "engine": "llama.cpp (PrismML fork)",
+          "quant": "GGUF Q2_0 (ternary, 1.58 bpw)"
+        },
+        {
+          "name": "qwen3-8b-bf16",
+          "score": 0.608,
+          "engine": "vLLM",
+          "quant": "BF16"
+        }
+      ],
+      "ifeval": [
+        {
+          "name": "gemma-3-27b-awq",
+          "score": 0.8373,
+          "engine": "Triton vLLM",
+          "quant": "AWQ"
+        },
+        {
+          "name": "ollama-qwen3-8b",
+          "score": 0.798521,
+          "engine": "Ollama",
+          "quant": "GGUF Q4_K_M"
+        },
+        {
+          "name": "qwen3-8b-bf16",
+          "score": 0.349353,
+          "engine": "vLLM",
+          "quant": "BF16"
+        }
+      ],
+      "gpqa": [
+        {
+          "name": "deepseek-v4-flash",
+          "score": 0.504464,
+          "engine": "vLLM (remote OpenAI-compatible)",
+          "quant": "served (remote vLLM)"
+        },
+        {
+          "name": "gemma-3-27b-awq",
+          "score": 0.279018,
+          "engine": "Triton vLLM",
+          "quant": "AWQ"
+        },
+        {
+          "name": "local-27b-27b-ternary",
+          "score": 0.265625,
+          "engine": "llama.cpp (PrismML fork)",
+          "quant": "GGUF Q2_0 (ternary, 1.58 bpw)"
+        }
+      ]
+    },
+    "use_case_recommendations": {
+      "Чат-бот": [
+        {
+          "name": "gemma-3-27b-awq",
+          "score": 0.8556857142857144,
+          "details": [
+            "ifeval:0.837",
+            "gsm8k:0.880"
+          ]
+        },
+        {
+          "name": "qwen2.5-vl-7b",
+          "score": 0.5978030909090909,
+          "details": [
+            "mmlu_pro:0.501",
+            "gsm8k:0.679"
+          ]
+        },
+        {
+          "name": "deepseek-v4-flash",
+          "score": 0.5794575714285715,
+          "details": [
+            "ifeval:0.305",
+            "gsm8k:0.945"
+          ]
+        }
+      ],
+      "Программирование": [
+        {
+          "name": "gemma-3-27b-awq",
+          "score": 0.841463,
+          "details": [
+            "humaneval:0.841"
+          ]
+        },
+        {
+          "name": "deepseek-v4-flash",
+          "score": 0.8203683333333333,
+          "details": [
+            "humaneval:0.841",
+            "mbpp:0.794"
+          ]
+        },
+        {
+          "name": "qwen3-8b-bf16",
+          "score": 0.7111946285714286,
+          "details": [
+            "humaneval:0.860",
+            "mbpp:0.608",
+            "mmlu_pro:0.587"
+          ]
+        }
+      ],
+      "Математика/Reasoning": [
+        {
+          "name": "deepseek-v4-flash",
+          "score": 0.6908623749999999,
+          "details": [
+            "gsm8k:0.945",
+            "minerva_math:0.572",
+            "gpqa:0.504"
+          ]
+        },
+        {
+          "name": "gemma-3-27b-awq",
+          "score": 0.6069354545454544,
+          "details": [
+            "gsm8k:0.880",
+            "gpqa:0.279"
+          ]
+        },
+        {
+          "name": "qwen2.5-vl-7b",
+          "score": 0.47019945454545453,
+          "details": [
+            "gsm8k:0.679",
+            "minerva_math:0.186",
+            "mmlu_pro:0.501"
+          ]
+        }
+      ],
+      "RAG/Документы": [
+        {
+          "name": "gemma-3-27b-awq",
+          "score": 0.8373,
+          "details": [
+            "ifeval:0.837"
+          ]
+        },
+        {
+          "name": "ollama-qwen3-8b",
+          "score": 0.6402762941176471,
+          "details": [
+            "mmlu_pro:0.530",
+            "ifeval:0.799"
+          ]
+        },
+        {
+          "name": "qwen2.5-vl-7b",
+          "score": 0.500914,
+          "details": [
+            "mmlu_pro:0.501"
+          ]
+        }
+      ],
+      "Инструкции": [
+        {
+          "name": "gemma-3-27b-awq",
+          "score": 0.848025,
+          "details": [
+            "ifeval:0.837",
+            "gsm8k:0.880"
+          ]
+        },
+        {
+          "name": "qwen2.5-vl-7b",
+          "score": 0.678544,
+          "details": [
+            "gsm8k:0.679"
+          ]
+        },
+        {
+          "name": "ollama-qwen3-8b",
+          "score": 0.602113,
+          "details": [
+            "ifeval:0.799",
+            "gsm8k:0.013"
+          ]
+        }
+      ]
+    }
+  },
+  "recommendations_html": "\n<div class=\"recommendations-panel\">\n  <h3>Automatic Recommendations</h3>\n  <p class=\"update-time\">Updated: 2026-08-07 09:41:43</p>\n\n  <div class=\"recommendation-section\">\n    <h4>Top Models by Integral Score</h4>\n\n    <div class=\"top-model\" style=\"border-left: 3px solid #4A90E2\">\n      <span class=\"rank\">1st</span>\n      <span class=\"model-name\">gemma-3-27b-awq</span>\n      <span class=\"score\">0.709</span>\n      <span class=\"coverage\">Coverage: 4/7</span>\n    </div>\n\n    <div class=\"top-model\" style=\"border-left: 3px solid #50E3C2\">\n      <span class=\"rank\">2nd</span>\n      <span class=\"model-name\">deepseek-v4-flash</span>\n      <span class=\"score\">0.687</span>\n      <span class=\"coverage\">Coverage: 6/7</span>\n    </div>\n\n    <div class=\"top-model\" style=\"border-left: 3px solid #F5A623\">\n      <span class=\"rank\">3rd</span>\n      <span class=\"model-name\">qwen2.5-vl-7b</span>\n      <span class=\"score\">0.458</span>\n      <span class=\"coverage\">Coverage: 3/7</span>\n    </div>\n\n    <p class=\"recommendation\"><strong>gemma-3-27b-awq</strong> - optimal choice with best integral score.</p>\n\n  </div>\n\n  <div class=\"recommendation-section\">\n    <h4>Best Models by Use Case</h4>\n\n    <div class=\"scenario\">\n      <strong class=\"scenario-name\">Чат-бот:</strong>\n      <span class=\"best\">gemma-3-27b-awq (0.856)</span>\n      <p class=\"detail\">Active benchmarks: ifeval:0.837, gsm8k:0.880</p>    </div>\n\n    <div class=\"scenario\">\n      <strong class=\"scenario-name\">Программирование:</strong>\n      <span class=\"best\">gemma-3-27b-awq (0.841)</span>\n      <p class=\"detail\">Active benchmarks: humaneval:0.841</p>    </div>\n\n    <div class=\"scenario\">\n      <strong class=\"scenario-name\">Математика/Reasoning:</strong>\n      <span class=\"best\">deepseek-v4-flash (0.691)</span>\n      <p class=\"detail\">Active benchmarks: gsm8k:0.945, minerva_math:0.572, gpqa:0.504</p>    </div>\n\n    <div class=\"scenario\">\n      <strong class=\"scenario-name\">RAG/Документы:</strong>\n      <span class=\"best\">gemma-3-27b-awq (0.837)</span>\n      <p class=\"detail\">Active benchmarks: ifeval:0.837</p>    </div>\n\n    <div class=\"scenario\">\n      <strong class=\"scenario-name\">Инструкции:</strong>\n      <span class=\"best\">gemma-3-27b-awq (0.848)</span>\n      <p class=\"detail\">Active benchmarks: ifeval:0.837, gsm8k:0.880</p>    </div>\n\n  </div>\n\n  <div class=\"recommendation-section\">\n    <h4>Benchmark Winners</h4>\n\n    <div class=\"benchmark-winner\">\n      <span class=\"benchmark\">MMLU-Pro:</span>\n      <span class=\"winner\">qwen3-8b-bf16 - 58.7%</span>\n    </div>\n\n    <div class=\"benchmark-winner\">\n      <span class=\"benchmark\">GSM8K:</span>\n      <span class=\"winner\">deepseek-v4-flash - 94.5%</span>\n    </div>\n\n    <div class=\"benchmark-winner\">\n      <span class=\"benchmark\">Minerva Math:</span>\n      <span class=\"winner\">deepseek-v4-flash - 57.2%</span>\n    </div>\n\n    <div class=\"benchmark-winner\">\n      <span class=\"benchmark\">HumanEval:</span>\n      <span class=\"winner\">qwen3-8b-bf16 - 86.0%</span>\n    </div>\n\n    <div class=\"benchmark-winner\">\n      <span class=\"benchmark\">MBPP:</span>\n      <span class=\"winner\">deepseek-v4-flash - 79.4%</span>\n    </div>\n\n    <div class=\"benchmark-winner\">\n      <span class=\"benchmark\">IFEval:</span>\n      <span class=\"winner\">gemma-3-27b-awq - 83.7%</span>\n    </div>\n\n    <div class=\"benchmark-winner\">\n      <span class=\"benchmark\">GPQA:</span>\n      <span class=\"winner\">deepseek-v4-flash - 50.4%</span>\n    </div>\n\n  </div>\n\n  <div class=\"recommendation-section\">\n    <h4>Practical Recommendations</h4>\n    <ul class=\"tips\">\n      <li>For general use: <strong>gemma-3-27b-awq</strong> - best integral score (0.709)</li>\n      <li>For programming: <strong>qwen3-8b-bf16</strong> - 86.0% on HumanEval</li>\n      <li>For mathematics: <strong>deepseek-v4-flash</strong> - 94.5% on GSM8K</li>\n      <li>For comprehensive testing: <strong>qwen3-8b-bf16</strong> - maximum coverage (7/7)</li>\n\n    </ul>\n  </div>\n</div>\n",
+  "top_model": "gemma-3-27b-awq",
+  "best_score": 0.7088987045454546
+}

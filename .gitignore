@@ -1,0 +1,102 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+.eggs/
+.eggs-info/
+.installed.cfg
+lib/*.so
+lib/*.so.*
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.venv/
+venv/
+.venv-*/
+.venv-vlmeval/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+*.ipynb
+.ipynb_checkpoints/
+
+# MLflow
+mlflow.db
+mlruns/
+
+# Logs
+logs/
+*.log
+nohup.out
+
+# Environment
+.env
+.env.local
+.env.*.local
+config/*.env
+.venv
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Benchmarks output
+out/
+out_dashboard/
+out_html/
+*.bak
+
+# Temporary files
+*.tmp
+*.temp
+*_temp
+
+# Database
+*.db
+*.sqlite
+
+# Documentation builds
+docs/_build/
+site/
+
+# My artifacts
+ARCHITECTURE_*.md
+AUTO_UPDATE_*.md
+DASHBOARD_*.md
+SPIKE_LOCAL27B_*.md
+
+# Scripts
+scripts/safe_*.sh
+scripts/triton_*.sh
+
+# Caches and third-party
+.cache/
+.llmbench/
+third_party/
+
+# Archives and junk
+*.zip
+VERIFICATION_GUIDE.txt
+integration_progress.json
+gemma-proxy.service
+llmbench_orchestrator.py
+run_ollama_queue.sh
+triton-docker-compose.yml
+systemd/
+api/
