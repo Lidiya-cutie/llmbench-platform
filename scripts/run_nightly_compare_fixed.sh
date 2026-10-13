@@ -5,8 +5,8 @@
 
 set -euo pipefail
 
-LLMBENCH=/opt/llm-data/llmbench
-LOCAL27B=/opt/llm-data/local-27b-demo
+LLMBENCH=/opt/llmbench
+LOCAL27B=/opt/models/local-27b
 MLOPS=/opt/mlops-stack
 QWEN25VL_SNAP="hub/models--Qwen--Qwen2.5-VL-7B-Instruct/snapshots/cc594898137f460bfe9f0759e9844b3ce807cfb5"
 LOGDIR="$LLMBENCH/logs"
@@ -60,7 +60,7 @@ start_vllm() {
   # shellcheck disable=SC2086
   docker run -d --name vllm-bench \
     --gpus '"device=0"' \
-    -v /opt/llm-data/.cache_huggingface:/root/.cache/huggingface \
+    -v /opt/hf-cache:/root/.cache/huggingface \
     -p 8077:8077 \
     mlops-triton-vllm:24.12-qwen3 \
     vllm serve "$model_path" \

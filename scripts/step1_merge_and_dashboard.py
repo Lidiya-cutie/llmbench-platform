@@ -1,7 +1,7 @@
 import json, sys, os
 from pathlib import Path
 
-OUT = Path("/opt/llm-data/llmbench/out")
+OUT = Path("/opt/llmbench/out")
 
 card_path = OUT / "card_deepseek-v4-flash.json"
 card = json.loads(card_path.read_text())
@@ -24,7 +24,7 @@ card_path.write_text(json.dumps(card, ensure_ascii=False, indent=2))
 print(f"Updated: {card_path.name}")
 
 print("\n--- Regenerating dashboard ---")
-sys.path.insert(0, str(Path("/opt/llm-data/llmbench/scripts")))
+sys.path.insert(0, str(Path("/opt/llmbench/scripts")))
 try:
     from generate_dashboard_v2 import DashboardGenerator
     gen = DashboardGenerator()
@@ -32,4 +32,4 @@ try:
     print("Dashboard v2 regenerated.")
 except Exception as e:
     print(f"Dashboard v2 failed ({e}), trying subprocess...")
-    os.system("cd /opt/llm-data/llmbench && python3 scripts/generate_dashboard_v2.py")
+    os.system("cd /opt/llmbench && python3 scripts/generate_dashboard_v2.py")

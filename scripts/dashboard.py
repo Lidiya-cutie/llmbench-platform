@@ -20,8 +20,8 @@ from typing import Dict, Any, List
 
 class ProgressTracker:
     def __init__(self):
-        self.logs_dir = Path("/opt/llm-data/llmbench/logs")
-        self.cards_dir = Path("/opt/llm-data/llmbench/out")
+        self.logs_dir = Path("/opt/llmbench/logs")
+        self.cards_dir = Path("/opt/llmbench/out")
 
     def get_active_models(self) -> List[Dict[str, Any]]:
         """Получение списка активных моделей."""

@@ -2,8 +2,8 @@ import json, subprocess, argparse, time, os
 from pathlib import Path
 from datetime import datetime
 
-OUT = Path("/opt/llm-data/llmbench/out")
-MODELS_YAML = Path("/opt/llm-data/llmbench/models.yaml")
+OUT = Path("/opt/llmbench/out")
+MODELS_YAML = Path("/opt/llmbench/models.yaml")
 
 KNOWN_ENDPOINTS = [
     {"name":"vllm-vl","url":"http://localhost:8077/v1/models","type":"openai"},

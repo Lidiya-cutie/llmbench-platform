@@ -21,7 +21,7 @@ class EnterprisePlan:
     """Concrete action plan for enterprise transformation"""
 
     def __init__(self):
-        self.base_dir = Path("/opt/llm-data/llmbench")
+        self.base_dir = Path("/opt/llmbench")
         self.state_dir = self.base_dir / ".llmbench" / "state"
         self.backup_dir = self.base_dir / ".llmbench" / "backups"
 

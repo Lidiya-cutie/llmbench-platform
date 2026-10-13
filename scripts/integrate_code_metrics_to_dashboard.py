@@ -12,7 +12,7 @@ from pathlib import Path
 import json
 import shutil
 
-LLMBENCH = Path("/opt/llm-data/llmbench")
+LLMBENCH = Path("/opt/llmbench")
 
 def integrate_code_metrics_to_dashboard():
     """Добавление code секции в generate_dashboard_v2.py"""

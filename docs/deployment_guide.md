@@ -81,7 +81,7 @@ docker run -d \
   --name vllm-qwen3 \
   --gpus '"device=0"' \
   -p 8077:8000 \
-  -v /opt/llm-data/models:/models \
+  -v /opt/models:/models \
   --ipc=host \
   vllm/vllm-openai:latest \
   --model /models/Qwen3-8B \
@@ -111,7 +111,7 @@ docker run -d \
   --name llama-server \
   --gpus '"device=1"' \
   -p 8080:8080 \
-  -v /opt/llm-data/models:/models \
+  -v /opt/models:/models \
   ghcr.io/ggerganov/llama.cpp:server \
   -m /models/local-27b-27b.gguf \
   --host 0.0.0.0 --port 8080 \

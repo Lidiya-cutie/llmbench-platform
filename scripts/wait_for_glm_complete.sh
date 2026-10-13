@@ -1,12 +1,12 @@
 #!/bin/bash
 # Скрипт ожидания завершения glm-4-9b-chat прогона с автозапуском следующих шагов
 
-LOG_FILE="/opt/llm-data/llmbench/logs/eval_glm-4-9b-chat.log"
-CARD_FILE="/opt/llm-data/llmbench/out/card_glm-4-9b-chat.json"
+LOG_FILE="/opt/llmbench/logs/eval_glm-4-9b-chat.log"
+CARD_FILE="/opt/llmbench/out/card_glm-4-9b-chat.json"
 CHECK_INTERVAL=300  # 5 минут
 
 log_msg() {
-    echo "[$(date -Iseconds)] $*" | tee -a /opt/llm-data/llmbench/logs/glm_waiter.log
+    echo "[$(date -Iseconds)] $*" | tee -a /opt/llmbench/logs/glm_waiter.log
 }
 
 wait_for_completion() {
@@ -87,7 +87,7 @@ if wait_for_completion; then
     log_msg "6. Завершить compare_models"
 
     # Можно добавить автоматический запуск следующих шагов
-    # /opt/llm-data/llmbench/scripts/run_next_phase.sh
+    # /opt/llmbench/scripts/run_next_phase.sh
 else
     log_msg "=== glm-4-9b-chat ЗАВЕРШИЛСЯ С ОШИБКАМИ ==="
     log_msg "Проверьте логи и вручную перезапустите прогон"

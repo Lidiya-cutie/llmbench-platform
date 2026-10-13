@@ -1,10 +1,10 @@
 #!/bin/bash
-# Интеграция code benchmarks в существующую систему /opt/llm-data/llmbench
+# Интеграция code benchmarks в существующую систему /opt/llmbench
 # Запуск EvalPlus для всех моделей без прерывания текущих процессов
 
 set -euo pipefail
 
-LLMBENCH=/opt/llm-data/llmbench
+LLMBENCH=/opt/llmbench
 VENV_PY="$LLMBENCH/.venv/bin/python"
 SCRIPTS="$LLMBENCH/scripts"
 OUT="$LLMBENCH/out"

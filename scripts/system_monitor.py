@@ -13,7 +13,7 @@ from typing import Dict, List, Any
 class SystemHealthMonitor:
     """Мониторинг системы без прерывания процессов"""
 
-    def __init__(self, base_dir: str = "/opt/llm-data/llmbench"):
+    def __init__(self, base_dir: str = "/opt/llmbench"):
         self.base_dir = Path(base_dir)
         self.models_config = self._load_models_config()
 
@@ -412,7 +412,7 @@ def main():
     html = monitor.create_status_dashboard()
 
     # Сохраняем
-    output_path = Path("/opt/llm-data/llmbench/out/system_status.html")
+    output_path = Path("/opt/llmbench/out/system_status.html")
     output_path.write_text(html, encoding="utf-8")
 
     print(f"\n✅ Status dashboard создан: {output_path}")

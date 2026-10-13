@@ -12,7 +12,7 @@
 #   SERVED_MODEL=Qwen2.5-VL-7B-Instruct bash scripts/run_vlm_docvqa_ocr.sh
 set -euo pipefail
 
-LLMBENCH="${LLMBENCH:-/opt/llm-data/llmbench}"
+LLMBENCH="${LLMBENCH:-/opt/llmbench}"
 VENV_PY="$LLMBENCH/.venv/bin/python"
 GPU_ID="${GPU_ID:-1}"
 MODEL_CARD="${MODEL_CARD:-qwen2.5-vl-7b}"

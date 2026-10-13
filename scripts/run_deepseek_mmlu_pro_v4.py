@@ -71,7 +71,7 @@ with ThreadPoolExecutor(max_workers=WORKERS) as pool:
 acc = correct / done * 100
 print(f"\nFINAL: {correct}/{done} = {acc:.1f}%", flush=True)
 
-outdir = "/opt/llm-data/llmbench/out/lmeval_deepseek-v4-flash_queue/mmlu_pro"
+outdir = "/opt/llmbench/out/lmeval_deepseek-v4-flash_queue/mmlu_pro"
 os.makedirs(outdir, exist_ok=True)
 json.dump({"model": "deepseek-v4-flash", "task": "mmlu_pro", "acc": acc,
            "correct": correct, "total": done},

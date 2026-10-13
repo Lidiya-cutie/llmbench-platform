@@ -84,7 +84,7 @@ HF-вариант использует `InternVLForConditionalGeneration`. Ко�
 docker run -d --gpus '"device=1"' \
   --name llmbench-vllm-test \
   -p 8077:8077 \
-  -v /opt/llm-data/.cache_huggingface:/root/.cache/huggingface \
+  -v /opt/hf-cache:/root/.cache/huggingface \
   vllm/vllm-openai:<VERSION> \
   --model <HF_REPO> \
   --host 0.0.0.0 --port 8077 \

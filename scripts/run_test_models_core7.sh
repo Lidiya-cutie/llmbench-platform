@@ -5,14 +5,14 @@
 # GPU1: Janus text OpenAI-shim
 set -uo pipefail
 
-LLMBENCH=/opt/llm-data/llmbench
+LLMBENCH=/opt/llmbench
 VENV=$LLMBENCH/.venv/bin/python
 LOGDIR=$LLMBENCH/logs
 MAIN=$LOGDIR/test_models_core7.log
 
 INTERN_PORT=8071
 INTERN_SERVED=InternVL3_5-8B-HF
-INTERN_MODEL_PATH=/opt/llm-data/.cache_huggingface/hub/models--OpenGVLab--InternVL3_5-8B-HF/snapshots/741a7d03020411e666c6109218ab71e08151ef86
+INTERN_MODEL_PATH=/opt/hf-cache/hub/models--OpenGVLab--InternVL3_5-8B-HF/snapshots/741a7d03020411e666c6109218ab71e08151ef86
 INTERN_OUT=$LLMBENCH/out/lmeval_internvl3-5-8b_queue
 INTERN_CARD=$LLMBENCH/out/card_internvl3-5-8b.json
 INTERN_SHIM=$LLMBENCH/scripts/internvl_openai_shim.py
@@ -185,7 +185,7 @@ import json
 from pathlib import Path
 CORE=["mmlu_pro","gsm8k","minerva_math","humaneval","mbpp","ifeval","gpqa"]
 for name in ["internvl3-5-8b","janus-pro-7b"]:
-  c=json.load(open(f"/opt/llm-data/llmbench/out/card_{name}.json"))
+  c=json.load(open(f"/opt/llmbench/out/card_{name}.json"))
   q=c.get("quality") or {}
   gaps=[k for k in CORE if not (isinstance(q.get(k),(int,float)) and float(q[k])>0)]
   print(name, f"{7-len(gaps)}/7", {k:q.get(k) for k in CORE}, "gaps", gaps)

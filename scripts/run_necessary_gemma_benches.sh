@@ -1,6 +1,6 @@
 #!/bin/bash
 set -u
-LLMBENCH=/opt/llm-data/llmbench
+LLMBENCH=/opt/llmbench
 VENV=$LLMBENCH/.venv/bin/python
 LOGDIR=$LLMBENCH/logs
 GOUT=$LLMBENCH/out/lmeval_gemma-3-27b-awq_queue

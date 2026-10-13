@@ -79,7 +79,6 @@ site/
 ARCHITECTURE_*.md
 AUTO_UPDATE_*.md
 DASHBOARD_*.md
-SPIKE_LOCAL27B_*.md
 
 # Scripts
 scripts/safe_*.sh

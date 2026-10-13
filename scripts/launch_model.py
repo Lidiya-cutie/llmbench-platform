@@ -66,8 +66,8 @@ class ProcessHandle:
         }
 
 
-LOGDIR = Path("/opt/llm-data/llmbench/logs")
-PIDDIR = Path("/opt/llm-data/llmbench/logs/pids")
+LOGDIR = Path("/opt/llmbench/logs")
+PIDDIR = Path("/opt/llmbench/logs/pids")
 
 
 def load_cfg(path: str) -> dict:

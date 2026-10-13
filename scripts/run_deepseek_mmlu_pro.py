@@ -1,5 +1,5 @@
 import asyncio, os, sys
-sys.path.insert(0, '/opt/llm-data/llmbench')
+sys.path.insert(0, '/opt/llmbench')
 
 from aiohttp_socks import ProxyConnector
 import aiohttp
@@ -41,7 +41,7 @@ result = simple_evaluate(
 )
 
 import json
-out = '/opt/llm-data/llmbench/out/lmeval_deepseek-v4-flash_queue/mmlu_pro'
+out = '/opt/llmbench/out/lmeval_deepseek-v4-flash_queue/mmlu_pro'
 os.makedirs(out, exist_ok=True)
 
 # Save results

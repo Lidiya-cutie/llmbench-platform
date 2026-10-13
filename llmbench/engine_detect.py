@@ -77,7 +77,7 @@ def _cmd_vllm(repo: str, port: int = 8077, gpu_index: int = 0, **kwargs) -> str:
     extra = kwargs.get("extra_args", "")
     return (
         f"docker run -d --name vllm-{model_name} --gpus device={gpu_index} "
-        f"-v /opt/llm-data/.cache_huggingface:/root/.cache/huggingface "
+        f"-v /opt/hf-cache:/root/.cache/huggingface "
         f"-p {port}:{port} "
         f"mlops-triton-vllm:24.12-qwen3 "
         f"vllm serve /root/.cache/huggingface/{repo} "
@@ -94,7 +94,7 @@ def _cmd_sglang(repo: str, port: int = 8078, gpu_index: int = 0, **kwargs) -> st
     model_name = kwargs.get("served_model_name", repo.split("/")[-1])
     return (
         f"docker run -d --name sgl-{model_name} --gpus device={gpu_index} "
-        f"-v /opt/llm-data/.cache_huggingface:/root/.cache/huggingface "
+        f"-v /opt/hf-cache:/root/.cache/huggingface "
         f"-p {port}:{port} "
         f"sglang/sglang:latest "
         f"python3 -m sglang.launch_server --model {repo} "
@@ -105,7 +105,7 @@ def _cmd_sglang(repo: str, port: int = 8078, gpu_index: int = 0, **kwargs) -> st
 
 
 def _cmd_llamacpp(repo: str, port: int = 8080, gpu_index: int = 0, **kwargs) -> str:
-    gguf_path = kwargs.get("gguf_path", f"/opt/llm-data/models/{repo.split('/')[-1]}")
+    gguf_path = kwargs.get("gguf_path", f"/opt/models/{repo.split('/')[-1]}")
     model_name = kwargs.get("served_model_name", "local-27b")
     extra_env = kwargs.get("env", "")
     extra_args = kwargs.get("extra_args", "--no-mmap --numa")
@@ -128,7 +128,7 @@ def _cmd_tgi(repo: str, port: int = 8079, gpu_index: int = 0, **kwargs) -> str:
     model_name = kwargs.get("served_model_name", repo.split("/")[-1])
     return (
         f"docker run -d --name tgi-{model_name} --gpus device={gpu_index} "
-        f"-v /opt/llm-data/.cache_huggingface:/root/.cache/huggingface "
+        f"-v /opt/hf-cache:/root/.cache/huggingface "
         f"-p {port}:80 "
         f"ghcr.io/huggingface/text-generation-inference:latest "
         f"--model-id {repo} --dtype {dtype} "
@@ -147,7 +147,7 @@ def _cmd_ollama(repo: str, port: int = 8081, **kwargs) -> str:
 
 def _cmd_trtllm(repo: str, port: int = 8082, gpu_index: int = 0, **kwargs) -> str:
     model_name = kwargs.get("served_model_name", repo.split("/")[-1])
-    engine_dir = kwargs.get("engine_dir", f"/opt/llm-data/trt-engines/{model_name}")
+    engine_dir = kwargs.get("engine_dir", f"/opt/trt-engines/{model_name}")
     return (
         f"docker run -d --name trt-{model_name} --gpus device={gpu_index} "
         f"-v {engine_dir}:/engines "

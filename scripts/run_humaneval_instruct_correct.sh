@@ -7,7 +7,7 @@ MODEL=${2:?model}
 BASE_URL=${3:?base_url}
 OUT=${4:?out_dir}
 CONC=${5:-2}
-LLMBENCH=/opt/llm-data/llmbench
+LLMBENCH=/opt/llmbench
 VENV=$LLMBENCH/.venv/bin/python
 LOG=$LLMBENCH/logs/humaneval_instruct_${NAME}.log
 mkdir -p "$OUT" "$LLMBENCH/logs"

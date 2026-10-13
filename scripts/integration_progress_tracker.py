@@ -96,7 +96,7 @@ class IntegrationTracker:
 
             # Disk check
             disk_result = subprocess.run(
-                ["df", "-h", "/opt/data"],
+                ["df", "-h", "/opt"],
                 capture_output=True, text=True, timeout=10
             )
 

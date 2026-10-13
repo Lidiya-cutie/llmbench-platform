@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
-LLMBENCH=/opt/llm-data/llmbench
+LLMBENCH=/opt/llmbench
 VENV="$LLMBENCH/.venv/bin/python"
-HF=/opt/llm-data/.cache_huggingface
+HF=/opt/hf-cache
 OUT="$LLMBENCH/out/lmeval_qwen3-8b-bf16_queue"
 LOG="$LLMBENCH/logs/qwen3_mmlu_pro_standalone.log"
 mkdir -p "$OUT/mmlu_pro" "$LLMBENCH/.cache"

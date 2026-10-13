@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""EvalPlus code benchmark integration для /opt/llm-data/llmbench.
+"""EvalPlus code benchmark integration для /opt/llmbench.
 
 Поддержка HumanEval+, MBPP+, LiveCodeBench через единый harness.
 Интеграция с существующей системой карточек и дашбордов.
@@ -97,7 +97,7 @@ MODEL_CONFIGS = {
 
 
 class CodeBenchmarkRunner:
-    """Запуск code benchmarks с интеграцией в /opt/llm-data/llmbench."""
+    """Запуск code benchmarks с интеграцией в /opt/llmbench."""
 
     def __init__(self, llmbench_dir: Path):
         self.llmbench = llmbench_dir
@@ -262,7 +262,7 @@ def main():
     parser = argparse.ArgumentParser(description="EvalPlus integration for llmbench")
     parser.add_argument("--model", required=True, choices=list(MODEL_CONFIGS.keys()))
     parser.add_argument("--benchmark", default="humaneval+", choices=list(CODE_BENCHMARKS.keys()))
-    parser.add_argument("--llmbench", default="/opt/llm-data/llmbench", type=Path)
+    parser.add_argument("--llmbench", default="/opt/llmbench", type=Path)
     parser.add_argument("--update-card", action="store_true")
 
     args = parser.parse_args()

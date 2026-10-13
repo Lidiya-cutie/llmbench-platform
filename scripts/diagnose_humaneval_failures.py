@@ -262,7 +262,7 @@ class HumanEvalDiagnostics:
 def main():
     parser = argparse.ArgumentParser(description="Diagnose HumanEval failures")
     parser.add_argument("--model", required=True, help="Model key (e.g., qwen3-8b-bf16)")
-    parser.add_argument("--llmbench", default="/opt/llm-data/llmbench", type=Path)
+    parser.add_argument("--llmbench", default="/opt/llmbench", type=Path)
     parser.add_argument("--output", type=Path, help="Save diagnosis to JSON file")
 
     args = parser.parse_args()

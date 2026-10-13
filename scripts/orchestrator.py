@@ -122,7 +122,7 @@ class GpuOrchestrator:
                     cmd,
                     stdout=log_file,
                     stderr=subprocess.STDOUT,
-                    cwd="/opt/llm-data/llmbench"
+                    cwd="/opt/llmbench"
                 )
                 self.running_processes[task.model_key] = process
                 task.status = "running"

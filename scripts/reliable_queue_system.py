@@ -24,7 +24,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 import requests
 
-LLMBENCH = Path("/opt/llm-data/llmbench")
+LLMBENCH = Path("/opt/llmbench")
 LOGS_DIR = LLMBENCH / "logs"
 OUT_DIR = LLMBENCH / "out"
 

@@ -1,8 +1,8 @@
 #!/bin/bash
 # Мониторинг прогресса glm-4-9b-chat lm-eval прогона
 
-LOG_FILE="/opt/llm-data/llmbench/logs/eval_glm-4-9b-chat.log"
-CARD_FILE="/opt/llm-data/llmbench/out/card_glm-4-9b-chat.json"
+LOG_FILE="/opt/llmbench/logs/eval_glm-4-9b-chat.log"
+CARD_FILE="/opt/llmbench/out/card_glm-4-9b-chat.json"
 
 echo "=== Мониторинг glm-4-9b-chat lm-eval прогона ==="
 echo "Время: $(date)"

@@ -16,7 +16,7 @@ from typing import Dict, List, Any
 
 
 class VendorClaimsVerifier:
-    def __init__(self, cards_dir: str = "/opt/llm-data/llmbench/out"):
+    def __init__(self, cards_dir: str = "/opt/llmbench/out"):
         self.cards_dir = Path(cards_dir)
         self.vendor_claims = {
             "ternary": {
@@ -146,11 +146,11 @@ def main():
     verifier = VendorClaimsVerifier()
     report = verifier.generate_report()
 
-    print("=== ОТЧЕТ ПО ПРОВЕРКЕ ЗАЯВЛЕНИЙ ВЕНДORA LOCAL27B ===")
+    print("=== ОТЧЕТ ПО ПРОВЕРКЕ ЗАЯВЛЕНИЙ ВЕНДОРА МОДЕЛИ ===")
     print(json.dumps(report, indent=2, ensure_ascii=False))
 
     # Сохранение отчета
-    output_file = Path("/opt/llm-data/llmbench/out/verify_vendor_report.json")
+    output_file = Path("/opt/llmbench/out/verify_vendor_report.json")
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_file, "w") as f:

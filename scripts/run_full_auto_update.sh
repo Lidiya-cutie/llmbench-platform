@@ -4,7 +4,7 @@
 
 set -e
 
-cd /opt/llm-data/llmbench
+cd /opt/llmbench
 
 echo "🚀 ПОЛНАЯ АВТОМАТИЗАЦИЯ ОБНОВЛЕНИЯ КАРТОЧЕК"
 echo "=================================================="
@@ -58,4 +58,4 @@ echo "   - Dashboard: out/dashboard_v2.html"
 echo "   - System status: out/system_status_v2.html"
 echo ""
 echo "🔄 Для автоматического запуска добавьте в cron:"
-echo "   */30 * * * * cd /opt/llm-data/llmbench && bash scripts/run_full_auto_update.sh >> logs/auto_update.log 2>&1"
+echo "   */30 * * * * cd /opt/llmbench && bash scripts/run_full_auto_update.sh >> logs/auto_update.log 2>&1"

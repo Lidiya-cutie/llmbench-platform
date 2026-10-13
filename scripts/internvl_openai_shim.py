@@ -14,7 +14,7 @@ from transformers import AutoModelForImageTextToText, AutoProcessor
 
 MODEL_PATH = os.environ.get(
     "INTERNVL_MODEL_PATH",
-    "/opt/llm-data/.cache_huggingface/hub/models--OpenGVLab--InternVL3_5-8B-HF/snapshots/741a7d03020411e666c6109218ab71e08151ef86",
+    "/opt/hf-cache/hub/models--OpenGVLab--InternVL3_5-8B-HF/snapshots/741a7d03020411e666c6109218ab71e08151ef86",
 )
 SERVED = os.environ.get("INTERNVL_SERVED_NAME", "InternVL3_5-8B-HF")
 PORT = int(os.environ.get("INTERNVL_PORT", "8071"))

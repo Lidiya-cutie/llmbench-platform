@@ -21,7 +21,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-LLMBENCH = Path(os.environ.get("LLMBENCH_DIR", "/opt/llm-data/llmbench"))
+LLMBENCH = Path(os.environ.get("LLMBENCH_DIR", "/opt/llmbench"))
 VENV_PY = LLMBENCH / ".venv" / "bin" / "python"
 DASHBOARD = LLMBENCH / "out" / "dashboard_v2" / "index.html"
 CARDS_DIR = LLMBENCH / "out"

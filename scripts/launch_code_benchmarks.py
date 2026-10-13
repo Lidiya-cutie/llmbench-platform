@@ -13,7 +13,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional
 
-LLMBENCH = Path("/opt/llm-data/llmbench")
+LLMBENCH = Path("/opt/llmbench")
 SCRIPTS = LLMBENCH / "scripts"
 LOGS = LLMBENCH / "logs"
 OUT = LLMBENCH / "out"

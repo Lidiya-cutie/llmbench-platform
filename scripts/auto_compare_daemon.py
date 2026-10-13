@@ -107,7 +107,7 @@ class AutoCompare:
                     cmd,
                     stdout=log_file,
                     stderr=subprocess.STDOUT,
-                    cwd="/opt/llm-data/llmbench"
+                    cwd="/opt/llmbench"
                 )
 
                 print(f"Запущен compare (PID: {process.pid})")

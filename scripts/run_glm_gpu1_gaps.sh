@@ -1,6 +1,6 @@
 #!/bin/bash
 set -u
-LLMBENCH=/opt/llm-data/llmbench
+LLMBENCH=/opt/llmbench
 VENV=$LLMBENCH/.venv/bin/python
 LOGDIR=$LLMBENCH/logs
 OUT=$LLMBENCH/out/lmeval_glm-4-9b-chat_queue

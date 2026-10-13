@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-LLMBENCH=/opt/llm-data/llmbench
+LLMBENCH=/opt/llmbench
 MLOPS=/opt/mlops-stack
 LOGDIR="$LLMBENCH/logs"
 MAIN="$LOGDIR/resume_glm_simplified.log"
@@ -24,7 +24,7 @@ sleep 3
 log "Start vLLM GLM on GPU0 :8077"
 docker run -d --name vllm-bench \
   --gpus device=0 \
-  -v /opt/llm-data/.cache_huggingface:/root/.cache/huggingface \
+  -v /opt/hf-cache:/root/.cache/huggingface \
   -p 8077:8077 \
   mlops-triton-vllm:24.12-qwen3 \
   vllm serve THUDM/glm-4-9b-chat \

@@ -3,14 +3,14 @@
 # Never touch GPU0 / Triton Gemma.
 set -uo pipefail
 
-LLMBENCH=/opt/llm-data/llmbench
+LLMBENCH=/opt/llmbench
 VENV=$LLMBENCH/.venv/bin/python
 LOGDIR=$LLMBENCH/logs
 MAIN=$LOGDIR/gpu1_1bit_gpqa_mbpp_then_vl_he.log
 LOCAL27B_PORT=8078
 VL_PORT=8077
-LOCAL27B_GGUF=/opt/llm-data/local-27b-demo/models/gguf/27B/local-27b-Q1_0.gguf
-LOCAL27B_BIN=/opt/llm-data/local-27b-demo/bin/cuda/llama-server
+LOCAL27B_GGUF=/opt/models/local-27b/models/gguf/27B/local-27b-Q1_0.gguf
+LOCAL27B_BIN=/opt/models/local-27b/bin/cuda/llama-server
 LOCAL27B_MODEL_NAME=local-27b-Q1_0.gguf
 LOCAL27B_OUT=$LLMBENCH/out/lmeval_local-27b-1bit_queue
 VL_OUT=$LLMBENCH/out/lmeval_qwen2.5-vl-7b_queue/humaneval_instruct_until_empty
@@ -189,7 +189,7 @@ import json, re
 from pathlib import Path
 from datetime import datetime, timezone
 
-ROOT = Path("/opt/llm-data/llmbench")
+ROOT = Path("/opt/llmbench")
 
 def latest_results(root: Path):
     files = sorted(root.rglob("results_*.json"), key=lambda p: p.stat().st_mtime)

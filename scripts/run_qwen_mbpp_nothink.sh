@@ -1,7 +1,7 @@
 #!/bin/bash
 # Qwen3 MBPP без thinking — иначе max_tokens съедается открытым <think> → pass@1=0.
 set -u
-LLMBENCH=/opt/llm-data/llmbench
+LLMBENCH=/opt/llmbench
 VENV=$LLMBENCH/.venv/bin/python
 OUT=$LLMBENCH/out/lmeval_qwen3-8b-bf16_queue/mbpp_instruct/Qwen3-8B
 LOG=$LLMBENCH/logs/rerun_v4_mbpp_instruct_qwen3_nothink.log
@@ -35,7 +35,7 @@ echo "[$(date -Is)] EXIT rc=$rc" | tee -a "$LOG"
 if find "$OUT" -name 'results_*.json' | grep -q .; then
   "$VENV" - <<'PY'
 import json,glob
-files=sorted(glob.glob("/opt/llm-data/llmbench/out/lmeval_qwen3-8b-bf16_queue/mbpp_instruct/**/results_*.json", recursive=True))
+files=sorted(glob.glob("/opt/llmbench/out/lmeval_qwen3-8b-bf16_queue/mbpp_instruct/**/results_*.json", recursive=True))
 d=json.load(open(files[-1]))
 r=d["results"].get("mbpp_instruct") or d["results"].get("mbpp") or {}
 print("[score]", {k:v for k,v in r.items() if isinstance(v,(int,float)) and "stderr" not in k})

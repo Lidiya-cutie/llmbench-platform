@@ -3,7 +3,7 @@ import json, glob, os, sys
 from pathlib import Path
 from collections import defaultdict
 
-OUT = Path(os.environ.get("LLMBENCH_OUT", "/opt/llm-data/llmbench/out"))
+OUT = Path(os.environ.get("LLMBENCH_OUT", "/opt/llmbench/out"))
 
 MODEL_MAP = {
     "Ternary-local-27b-Q2_0.gguf": "local-27b-27b-ternary",

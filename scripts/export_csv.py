@@ -1,7 +1,7 @@
 import json, csv, argparse
 from pathlib import Path
 
-OUT = Path("/opt/llm-data/llmbench/out")
+OUT = Path("/opt/llmbench/out")
 
 def load_cards():
     cards = {}

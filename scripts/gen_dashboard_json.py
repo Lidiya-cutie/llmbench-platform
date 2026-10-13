@@ -3,7 +3,7 @@ import json, os
 from pathlib import Path
 from collections import defaultdict
 
-OUT = Path(os.environ.get("LLMBENCH_OUT", "/opt/llm-data/llmbench/out"))
+OUT = Path(os.environ.get("LLMBENCH_OUT", "/opt/llmbench/out"))
 
 MODEL_META = {
     "local-27b-1bit": {"maker": "llama.cpp (PrismML fork) . GGUF Q1_0 (1.125 bpw)", "ev": "v", "context_max": 262144},

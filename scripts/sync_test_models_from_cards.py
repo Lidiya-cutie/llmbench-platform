@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-ROOT = Path("/opt/llm-data/llmbench")
+ROOT = Path("/opt/llmbench")
 TEST_JSON = ROOT / "out/dashboard_v2/test_models.json"
 CORE = ["mmlu_pro", "gsm8k", "minerva_math", "humaneval", "mbpp", "ifeval", "gpqa"]
 

@@ -3,7 +3,7 @@
 ## Быстрая проверка статуса
 
 ```bash
-/opt/llm-data/llmbench/scripts/check_glm_status.sh
+/opt/llmbench/scripts/check_glm_status.sh
 ```
 
 Показывает:
@@ -15,7 +15,7 @@
 ## Детальный мониторинг
 
 ```bash
-/opt/llm-data/llmbench/scripts/monitor_glm_progress.sh
+/opt/llmbench/scripts/monitor_glm_progress.sh
 ```
 
 Полная информация с расчетом времени.
@@ -23,7 +23,7 @@
 ## Автоматическое ожидание
 
 ```bash
-/opt/llm-data/llmbench/scripts/wait_for_glm_complete.sh
+/opt/llmbench/scripts/wait_for_glm_complete.sh
 ```
 
 Скрипт ждет завершения прогона и логирует события. После завершения выведет инструкции для следующих шагов.
@@ -37,12 +37,12 @@ ps aux | grep -E "(glm-4-9b|lm_eval)" | grep -v grep
 
 **Лог в реальном времени:**
 ```bash
-tail -f /opt/llm-data/llmbench/logs/eval_glm-4-9b-chat.log
+tail -f /opt/llmbench/logs/eval_glm-4-9b-chat.log
 ```
 
 **Прогресс из лога:**
 ```bash
-tail -1 /opt/llm-data/llmbench/logs/eval_glm-4-9b-chat.log | grep -oP "\d+/25026"
+tail -1 /opt/llmbench/logs/eval_glm-4-9b-chat.log | grep -oP "\d+/25026"
 ```
 
 ## Индикаторы завершения
@@ -54,19 +54,19 @@ tail -1 /opt/llm-data/llmbench/logs/eval_glm-4-9b-chat.log | grep -oP "\d+/25026
 
 2. **Карточка обновлена:**
    ```bash
-   ls -la /opt/llm-data/llmbench/out/card_glm-4-9b-chat.json
+   ls -la /opt/llmbench/out/card_glm-4-9b-chat.json
    # Время обновления должно быть недавним
    ```
 
 3. **Quality поле заполнено:**
    ```bash
-   cat /opt/llm-data/llmbench/out/card_glm-4-9b-chat.json | grep -A 10 '"quality"'
+   cat /opt/llmbench/out/card_glm-4-9b-chat.json | grep -A 10 '"quality"'
    # Должны быть метрики вместо {}
    ```
 
 4. **Нет ошибок в логе:**
    ```bash
-   tail -20 /opt/llm-data/llmbench/logs/eval_glm-4-9b-chat.log | grep -i "error\|fatal"
+   tail -20 /opt/llmbench/logs/eval_glm-4-9b-chat.log | grep -i "error\|fatal"
    # Должно быть пусто
    ```
 
@@ -86,7 +86,7 @@ tail -1 /opt/llm-data/llmbench/logs/eval_glm-4-9b-chat.log | grep -oP "\d+/25026
 
 2. Запустить local-27b ternary на GPU1:
    ```bash
-   export LOCAL27B=/opt/llm-data/local-27b-demo
+   export LOCAL27B=/opt/models/local-27b
    export LD_LIBRARY_PATH="$LOCAL27B/bin/cuda${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
    CUDA_VISIBLE_DEVICES=1 "$LOCAL27B/bin/cuda/llama-server" \
      -m "$LOCAL27B/models/ternary-gguf/27B/Ternary-local-27b-Q2_0.gguf" \
@@ -94,12 +94,12 @@ tail -1 /opt/llm-data/llmbench/logs/eval_glm-4-9b-chat.log | grep -oP "\d+/25026
      --host 127.0.0.1 --port 8078 -ngl 99 -fa on -c 8192 -np 1 \
      --temp 0.7 --top-p 0.95 --top-k 20 --min-p 0 --jinja \
      --reasoning off \
-     >>/opt/llm-data/llmbench/logs/local-27b_ternary_gpu1.log 2>&1 &
+     >>/opt/llmbench/logs/local-27b_ternary_gpu1.log 2>&1 &
    ```
 
 3. Запустить evaluate для local-27b:
    ```bash
-   cd /opt/llm-data/llmbench
+   cd /opt/llmbench
    .venv/bin/python scripts/evaluate_model.py \
      --model-key local-27b-27b-ternary \
      --base-url http://127.0.0.1:8078/v1 \

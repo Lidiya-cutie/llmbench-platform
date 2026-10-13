@@ -134,7 +134,7 @@ def check_vlmevalkit_installation():
     """Проверяет доступность VLMEvalKit."""
     try:
         import sys
-        sys.path.insert(0, "/opt/llm-data/llmbench/.venv-vlmeval/lib")
+        sys.path.insert(0, "/opt/llmbench/.venv-vlmeval/lib")
         import vlmeval
         return {"available": True, "version": vlmeval.__version__}
     except ImportError:
@@ -142,7 +142,7 @@ def check_vlmevalkit_installation():
 
 def check_vlm_documentation():
     """Проверяет документацию VLM."""
-    docs_path = "/opt/llm-data/llmbench/docs/vlm_protocol.md"
+    docs_path = "/opt/llmbench/docs/vlm_protocol.md"
     return os.path.exists(docs_path)
 ```
 

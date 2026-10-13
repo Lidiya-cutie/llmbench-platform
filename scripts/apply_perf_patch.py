@@ -1,7 +1,7 @@
 import shutil, re
 from pathlib import Path
 
-SCRIPTS = Path("/opt/llm-data/llmbench/scripts")
+SCRIPTS = Path("/opt/llmbench/scripts")
 perf = SCRIPTS / "perf_ext.py"
 
 bak = perf.with_suffix(".py.bak-perfpatch")

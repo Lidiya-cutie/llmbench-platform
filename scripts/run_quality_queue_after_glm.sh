@@ -4,13 +4,13 @@
 # Resumable: чекпоинт + systemd Restart=on-failure.
 set -uo pipefail
 
-LLMBENCH=/opt/llm-data/llmbench
+LLMBENCH=/opt/llmbench
 LOGDIR="$LLMBENCH/logs"
 OUT="$LLMBENCH/out"
 CKPT="$LOGDIR/after_glm_queue.checkpoint"
 MAIN="$LOGDIR/after_glm_queue.log"
 VENV_PY="$LLMBENCH/.venv/bin/python"
-HF_CACHE=/opt/llm-data/.cache_huggingface
+HF_CACHE=/opt/hf-cache
 VLLM_IMAGE=mlops-triton-vllm:24.12-qwen3
 TASKS=(gsm8k minerva_math mmlu_pro humaneval)
 GLM_UNIT=llmbench-glm-resumable.service
@@ -122,7 +122,7 @@ start_local-27b_ternary_gpu1() {
   fi
   log "local-27b ternary GPU1 :8080"
   (
-    cd /opt/llm-data/local-27b-demo
+    cd /opt/models/local-27b
     export CUDA_VISIBLE_DEVICES=1 LOCAL27B_THINKING=0
     nohup ./bin/cuda/llama-server \
       --model "$MODEL_PATH" \

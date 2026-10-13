@@ -26,7 +26,7 @@ services:
     ports:
       - "${VLLM_PORT_GPU0:-8070}:8070"
     volumes:
-      - ${HF_CACHE_DIR:-/opt/llm-data/.cache_huggingface}:/root/.cache/huggingface
+      - ${HF_CACHE_DIR:-/opt/hf-cache}:/root/.cache/huggingface
     deploy:
       resources:
         reservations:
@@ -59,7 +59,7 @@ services:
     ports:
       - "${VLLM_PORT_GPU1:-8077}:8077"
     volumes:
-      - ${HF_CACHE_DIR:-/opt/llm-data/.cache_huggingface}:/root/.cache/huggingface
+      - ${HF_CACHE_DIR:-/opt/hf-cache}:/root/.cache/huggingface
     deploy:
       resources:
         reservations:

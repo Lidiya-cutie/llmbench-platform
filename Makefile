@@ -16,7 +16,7 @@ SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
 # === Переменные ===
-LLMBENCH_DIR ?= /opt/llm-data/llmbench
+LLMBENCH_DIR ?= /opt/llmbench
 VENV ?= $(LLMBENCH_DIR)/.venv
 PY ?= $(VENV)/bin/python
 PIP ?= $(VENV)/bin/pip

@@ -3,7 +3,7 @@
 # Survives host reboot if systemd restarts this unit (completed tasks are skipped).
 set -uo pipefail
 
-LLMBENCH=/opt/llm-data/llmbench
+LLMBENCH=/opt/llmbench
 LOGDIR="$LLMBENCH/logs"
 OUT="$LLMBENCH/out"
 CKPT="$LOGDIR/glm_bench.checkpoint"
@@ -114,7 +114,7 @@ import glob, json, os
 from pathlib import Path
 from llmbench.lmeval import parse_results_file, _pick_primary
 
-root = Path("/opt/llm-data/llmbench/out/lmeval_glm_resumable")
+root = Path("/opt/llmbench/out/lmeval_glm_resumable")
 primary = {}
 tasks = {}
 for task_dir in sorted(root.iterdir() if root.exists() else []):
@@ -129,7 +129,7 @@ for task_dir in sorted(root.iterdir() if root.exists() else []):
     primary.update(le.primary)
     tasks.update(le.tasks)
 
-card_path = Path("/opt/llm-data/llmbench/out/card_glm-4-9b-chat.json")
+card_path = Path("/opt/llmbench/out/card_glm-4-9b-chat.json")
 if card_path.exists():
     card = json.loads(card_path.read_text())
 else:

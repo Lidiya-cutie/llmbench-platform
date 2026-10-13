@@ -13,7 +13,7 @@ from pathlib import Path
 import argparse
 
 class BenchmarkQueue:
-    def __init__(self, base_dir="/opt/llm-data/llmbench"):
+    def __init__(self, base_dir="/opt/llmbench"):
         self.base_dir = Path(base_dir)
         self.out_dir = self.base_dir / "out"
         self.logs_dir = self.base_dir / "logs"

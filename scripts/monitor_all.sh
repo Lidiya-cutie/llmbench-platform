@@ -28,7 +28,7 @@ while true; do
 
     # Статус качества
     echo "--- Quality статус ---"
-    python /opt/llm-data/llmbench/scripts/monitor_quality.py \
+    python /opt/llmbench/scripts/monitor_quality.py \
         --out-dir "$OUT_DIR" \
         --oneshot 2>/dev/null | grep -E '(Quality готов|✓|✗)'
     echo
@@ -41,7 +41,7 @@ while true; do
 
     # Свободное место
     echo "--- Диск ---"
-    df -h /opt/data | awk 'NR==2 {printf "Доступно: %s из %s (%s использовано)\n", $4, $2, $5}'
+    df -h /opt | awk 'NR==2 {printf "Доступно: %s из %s (%s использовано)\n", $4, $2, $5}'
     echo
 
     sleep "$CHECK_INTERVAL"

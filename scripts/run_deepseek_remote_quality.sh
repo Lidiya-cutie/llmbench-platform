@@ -3,7 +3,7 @@
 # Можно параллельно с GLM. Чекпоинт общий с after_glm_queue.
 set -uo pipefail
 
-LLMBENCH=/opt/llm-data/llmbench
+LLMBENCH=/opt/llmbench
 LOGDIR="$LLMBENCH/logs"
 OUT="$LLMBENCH/out"
 CKPT="$LOGDIR/after_glm_queue.checkpoint"

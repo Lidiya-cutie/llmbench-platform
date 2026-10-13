@@ -90,7 +90,7 @@ acc = correct / total * 100
 elapsed = time.time() - start
 print(f"\nFINAL: {correct}/{total} = {acc:.1f}% ({elapsed/60:.1f} min)", flush=True)
 
-out = "/opt/llm-data/llmbench/out/lmeval_deepseek-v4-flash_queue/mmlu_pro"
+out = "/opt/llmbench/out/lmeval_deepseek-v4-flash_queue/mmlu_pro"
 os.makedirs(out, exist_ok=True)
 json.dump({"model": "deepseek-v4-flash", "task": "mmlu_pro", "acc": acc, "correct": correct, "total": total},
           open(f"{out}/results_mmlu_pro_openrouter.json", "w"), indent=2)
